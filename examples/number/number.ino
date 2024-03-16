@@ -13,7 +13,7 @@ This example creates an HA-MQTT device with a slicer-number entity.
 
 
 // This file is not included in the repository only used for local testing
-// #include "secrets.h"
+//#include "secrets.h"
 
 // You must set the next defines
 #ifndef SECRETS_H
@@ -31,7 +31,7 @@ PubSubClient mqtt_client(wifi_client);
 // HA Parts
 #define ENTITIES_COUNT 1
 HADevice ha_device = HADevice("example01","Example 1 HA-MQTTT","1.0");
-HANumber number = HANumber("example01number","Slicer",ha_device,1,100,1);
+HANumber ha_number = HANumber("example01number","Slicer",ha_device,1,100,1);
 
 void ha_callback(HAEntity *entity, char *topic, byte *payload, unsigned int length);
 
@@ -40,7 +40,8 @@ void setup() {
     mqtt_client.setServer(MQTT_SERVER, MQTT_PORT);
 
     HAMQTT.begin(mqtt_client,ENTITIES_COUNT);
-    HAMQTT.addEntity(number);
+    HAMQTT.addEntity(ha_number);
+    ha_number.setState(50);
     HAMQTT.setCallback(ha_callback);
 
     // start wifi
@@ -64,8 +65,8 @@ void loop() {
     This is useful to handle other topics with the same mqtt client.
 */
 void ha_callback(HAEntity *entity, char *topic, byte *payload, unsigned int length){
-    if(entity == &number){
-        Serial.printf("Changed number state to %d \n",number.getState());
+    if(entity == &ha_number){
+        Serial.printf("Changed number state to %d \n",ha_number.getState());
     }
     else
         Serial.println("Callback called from other subscription");
