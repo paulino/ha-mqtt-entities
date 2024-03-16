@@ -22,8 +22,6 @@ HANumber::HANumber(const char *unique_id, const char *name,
         this->state = min;
 }
 
-
-// send config and send state
 void HANumber::onConnect(PubSubClient * client){
     char topic[HA_MAX_TOPIC_LENGTH],payload[HA_MAX_PAYLOAD_LENGTH];
     getCommandTopic(topic);
@@ -31,6 +29,8 @@ void HANumber::onConnect(PubSubClient * client){
 
     getConfigTopic(topic);
     getConfigPayload(payload,true,true);
+    sprintf(payload+strlen(payload)-1,",\"min\":%d,\"max\":%d,\"step\":%d}",
+        this->min,this->max,this->step);
     client->publish(topic,payload);
 }
 

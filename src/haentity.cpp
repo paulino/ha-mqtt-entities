@@ -20,7 +20,7 @@
 // Configuration topic
 const char *HAEntity::configTopicTemplate PROGMEM = "homeassistant/%s/%s/config";
 
-// Congiguration payload divided in 4 parts
+// Configuration payload divided in 4 parts
 const char *HAEntity::configPayloadTemplate PROGMEM = "{\
 \"name\":\"%s\",\
 \"unique_id\":\"%s\"";
