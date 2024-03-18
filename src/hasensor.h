@@ -17,7 +17,7 @@ class HASensor : public HAEntity {
         HASensor(const char *unique_id,const char *name);
 
         inline bool isDirty() {return this->dirty;};
-        void onConnect(PubSubClient * client);
+        virtual void onConnect(PubSubClient * client);
         virtual void onReceivedTopic(PubSubClient *, byte* payload,
             unsigned int length) {;}
 };

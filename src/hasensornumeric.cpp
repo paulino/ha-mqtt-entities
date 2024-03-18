@@ -5,13 +5,16 @@
 
 
 HASensorNumeric::HASensorNumeric(const char *unique_id, const char *name,
-    HADevice& device, int precision) : HASensorNumeric(unique_id,name,precision)
+    HADevice& device, const char* unit_of_measurement, int precision) :
+    HASensorNumeric(unique_id,name,unit_of_measurement,precision)
 {
     this->device = &device;
+
 }
 HASensorNumeric::HASensorNumeric(const char *unique_id, const char *name,
-    int precision) : HASensor(unique_id,name)
+    const char* unit_of_measurement, int precision) : HASensor(unique_id,name)
 {
+    this->unitOfMeasurement = unit_of_measurement;
     this->state = 0;
     if (precision < 0)
         this->precision = 0;
@@ -19,6 +22,18 @@ HASensorNumeric::HASensorNumeric(const char *unique_id, const char *name,
         this->precision = 9;
     else
         this->precision = precision;
+}
+
+
+void HASensorNumeric::onConnect(PubSubClient * client){
+    char topic[HA_MAX_TOPIC_LENGTH],payload[HA_MAX_PAYLOAD_LENGTH];
+    getConfigTopic(topic);
+    getConfigPayload(payload,false,true);
+    if(this->unitOfMeasurement != NULL){
+        int len = strlen(payload);
+        sprintf(payload + len - 1 ,",\"unit_of_measurement\":\"%s\"}",this->unitOfMeasurement);
+    }
+    client->publish(topic,payload);
 }
 
 
