@@ -62,7 +62,7 @@ The library supports items marked:
 - [X] Device name
 - [ ] Availability
 - [ ] Device class
-- [ ] Unit of measurement
+- [X] Unit of measurement
 - [ ] Icon
 - [ ] Attributes
 
