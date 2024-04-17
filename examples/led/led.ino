@@ -33,7 +33,7 @@ You must set the definitions in the code under SECRETS_H.
 WiFiClient wifi_client;
 PubSubClient mqtt_client(wifi_client);
 
-#define PIN_LED 2
+#define PIN_LED 2  // On board LED in ESP32 DevKit v1
 #define ENTITIES_COUNT 1
 #define SWITCH_UID "example01switch"  // Be careful of be unique in HA entities list
 
@@ -53,7 +53,7 @@ void setup() {
 void loop() {
     bool on_off = ha_switch.getState();
     digitalWrite(PIN_LED, on_off);
-    if (!mqtt_client.connected())
-        mqtt_client.connect("HAMQTTExample",MQTT_USER,MQTT_PASSWORD);
+    if (!HAMQTT.connected())
+        HAMQTT.connect("HAMQTTExample",MQTT_USER,MQTT_PASSWORD);
     HAMQTT.loop();
 }

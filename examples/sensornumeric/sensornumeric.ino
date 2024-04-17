@@ -52,15 +52,16 @@ void setup() {
 }
 
 void loop() {
-    static unsigned long one_second = -1000;
+    static unsigned long one_second_delay = millis() + 1000;
     static float counter = 0;
     HAMQTT.loop();
-    if(!mqtt_client.connected())
-         mqtt_client.connect("examples",MQTT_USER,MQTT_PASSWORD);
+    if(!HAMQTT.connected() &&
+            !HAMQTT.connect("examples",MQTT_USER,MQTT_PASSWORD))
+        delay(1000);
 
-    if(millis() - one_second > 1000){
+    if(millis() > one_second_delay) {
         // Update the sensor every second creating a sin wave
-        one_second = millis();
+        one_second_delay = millis() + 1000;
         counter+=0.1;
         ha_sensor.setState(3.3*sin(counter));
     }

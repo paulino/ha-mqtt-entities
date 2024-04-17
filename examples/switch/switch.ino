@@ -43,11 +43,14 @@ void setup() {
 }
 
 void loop() {
-    if(WiFi.status() == WL_CONNECTED && !mqtt_client.connected()) {
-         if( mqtt_client.connect("examples",MQTT_USER,MQTT_PASSWORD))
+    if(WiFi.status() == WL_CONNECTED && !HAMQTT.connected()) {
+         if( HAMQTT.connect("examples",MQTT_USER,MQTT_PASSWORD) )
             Serial.println("Connected to MQTT");
          else
-            Serial.println("Failed to connect to MQTT");
+         {
+            Serial.println("Failed to connect to MQTT. Retry in 5 seconds ...");
+            delay(5000);
+         }
     }
     HAMQTT.loop();
 }
@@ -57,10 +60,11 @@ void loop() {
     Entity can be NULL when the received topic is not related to any entity.
     This is useful to handle other topics with the same mqtt client.
 */
-void ha_callback(HAEntity *entity, char *topic, byte *payload, unsigned int length){
+void ha_callback(HAEntity *entity, char *topic, byte *payload,
+        unsigned int length)
+{
     Serial.printf("Received topic: %s\n",topic);
-    if(entity == &ha_switch){
+    if(entity == &ha_switch) {
         Serial.printf("Changed switch state to %d \n",ha_switch.getState());
     }
-
 }

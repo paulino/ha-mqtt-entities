@@ -38,6 +38,13 @@ void HAMQTTController::addEntity(HAEntity& entity) {
     this->entityCounter++;
 }
 
+boolean HAMQTTController::connect(const char *id, const char *user,
+    const char *pass) {
+        if (mqttClient != NULL && this->mqttClient->connect(id,user,pass))
+            this->onConnect();
+        return this->state == Connected;
+}
+
 void HAMQTTController::onConnect() {
     this->mqttClient->subscribe(topicHass);
     HAEntity *entity;
@@ -52,6 +59,7 @@ void HAMQTTController::onConnect() {
     }
     // Delay the first state send
     delaySendState = millis() + 2000;
+    this->state = Connected;
 
 }
 
@@ -105,15 +113,14 @@ void HAMQTTController::loop() {
 
     if(this->state == Disconnected )
     {
-        state = Connected;
         this->onConnect();
-        state = this->mqttClient->loop()?Connected:Disconnected;
     } else if(state == Connected)
     {
         if (millis() > delaySendState)
         {
             this->sendAllStates();
-            delaySendState = millis() + (3600L*24L);
+            Serial.println("Send all states");
+            delaySendState = millis() + (1000L*3600L*24L);
         }
         for (int i = 0 ; i < entityCounter ; i++)
             {

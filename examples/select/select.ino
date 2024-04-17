@@ -47,6 +47,7 @@ HASelect ha_select = HASelect("select04uid","Select",ha_device,OPTIONS_COUNT,sel
 void ha_callback(HAEntity *entity, char *topic, byte *payload, unsigned int length);
 
 void setup() {
+    Serial.begin(115200);
     mqtt_client.setServer(MQTT_SERVER, MQTT_PORT);
 
     HAMQTT.begin(mqtt_client,ENTITIES_COUNT);
@@ -57,9 +58,10 @@ void setup() {
 }
 
 void loop() {
+    if(!HAMQTT.connected() &&
+            !HAMQTT.connect("examples",MQTT_USER,MQTT_PASSWORD))
+        delay(1000);
     HAMQTT.loop();
-    if(!mqtt_client.connected())
-         mqtt_client.connect("examples",MQTT_USER,MQTT_PASSWORD);
 }
 
 /* Callback from HA-MQTT entities. It is called when an entity changes its state.

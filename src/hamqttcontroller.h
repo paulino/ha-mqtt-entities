@@ -42,10 +42,17 @@ class HAMQTTController {
         HAMQTTController(const HAMQTTController&) = delete;
         HAMQTTController& operator=(const HAMQTTController&) = delete;
 
-
-        //HAMQTTController(PubSubClient& mqtt_client,int component_count);
         void begin(PubSubClient& mqtt_client,int component_count);
         void addEntity(HAEntity& entity);
+
+        /** Connect to the MQTT broker using the PubSubClient instance.
+         *
+         * On success, it calls onConnect. Using this method is optional,
+         * but if it is not used, after connecting to MQTT, the onConnect
+         * method must be called manually.
+         */
+        boolean connect(const char *id, const char *user, const char *pass);
+        inline boolean connected() { return this->mqttClient->connected(); }
         void onConnect();
         void loop();
         void sendAllStates();

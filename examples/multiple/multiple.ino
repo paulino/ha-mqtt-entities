@@ -45,6 +45,7 @@ HASensorNumeric ha_sensor = HASensorNumeric("sensor04uid","Text length",ha_devic
 void ha_callback(HAEntity *entity, char *topic, byte *payload, unsigned int length);
 
 void setup() {
+    Serial.begin(115200);
     mqtt_client.setServer(MQTT_SERVER, MQTT_PORT);
 
     HAMQTT.begin(mqtt_client,ENTITIES_COUNT);
@@ -65,9 +66,18 @@ void setup() {
 }
 
 void loop() {
+    if(WiFi.status() == WL_CONNECTED && !HAMQTT.connected())
+    {
+        Serial.println("Connecting to MQTT...");
+        if (HAMQTT.connect("examples",MQTT_USER,MQTT_PASSWORD))
+            Serial.println("Connected to MQTT");
+        else {
+            Serial.print("Failed to connect to MQTT, retry in 5 seconds...");
+            delay(5000);
+        }
+    }
     HAMQTT.loop();
-    if(!mqtt_client.connected())
-         mqtt_client.connect("examples",MQTT_USER,MQTT_PASSWORD);
+    delay(50);
 }
 
 /* Callback from HA-MQTT entities. It is called when an entity changes its state.

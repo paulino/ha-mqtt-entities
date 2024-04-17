@@ -13,7 +13,7 @@ This example creates an HA-MQTT device with a slicer-number entity.
 
 
 // This file is not included in the repository only used for local testing
-//#include "secrets.h"
+// #include "secrets.h"
 
 // You must set the next defines
 #ifndef SECRETS_H
@@ -49,13 +49,16 @@ void setup() {
 }
 
 void loop() {
-    HAMQTT.loop();
-    if(WiFi.status() == WL_CONNECTED && !mqtt_client.connected()) {
-         if( mqtt_client.connect("examples",MQTT_USER,MQTT_PASSWORD))
+    if(WiFi.status() == WL_CONNECTED && !HAMQTT.connected()) {
+         if( HAMQTT.connect("examples",MQTT_USER,MQTT_PASSWORD))
             Serial.println("Connected to MQTT");
          else
+         {
             Serial.println("Failed to connect to MQTT");
+            delay(5000);
+         }
     }
+    HAMQTT.loop();
     delay(50);
 }
 
