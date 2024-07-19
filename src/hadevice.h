@@ -3,15 +3,18 @@
 
 class HADevice {
     protected:
-         const char *identifier;
-         const char *name;
+         char *identifier;
+         char *name;
          const char *sw_version;
 
     public:
-        HADevice(const  char *indentifier,  const char *name, const  char *sw_vesion);
+        HADevice(const  char *identifier,  const char *name, const  char *sw_version);
+        HADevice(const  char *sw_version);
         inline const char *getIdentifier() {return identifier;}
         inline const char *getName() {return name;}
         inline const char *getSwVersion() {return sw_version;}
+        void setIdentifier(const char *identifier);
+        void setName(const char *name);
 
 };
 #endif

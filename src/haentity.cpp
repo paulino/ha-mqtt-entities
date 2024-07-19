@@ -41,18 +41,30 @@ const char *HAEntity::configStateTopicTemplate PROGMEM =
 const char *HAEntity::commandTopicTemplate PROGMEM = "homeassistant/%s/%s/set";
 const char *HAEntity::stateTopicTemplate  PROGMEM= "homeassistant/%s/%s/state";
 
-HAEntity::HAEntity(const char *unique_id,const char *name,HADevice* ha_device,
+HAEntity::HAEntity(const char *id,const char *name,HADevice* ha_device,
     const char *component) {
-    this->uniqueId = unique_id;
+    this->uniqueId = NULL;
+    this->id = id ;
     this->component = component;
     this->name = name;
     this->device = ha_device;
 }
 
+const char *HAEntity::getUniqueId() {
+    if (this->device == NULL)
+        return this->id;
+    if (this->uniqueId == NULL)
+    {
+        this->uniqueId = new char[strlen(this->id) + strlen(this->device->getIdentifier()) + 2];
+        sprintf(this->uniqueId,"%s%s",this->device->getIdentifier(),this->id);
+    }
+    return this->uniqueId;
+}
+
 char * HAEntity::getConfigPayload(char *buffer,
         bool add_command_topic,bool add_state_topic) {
     int len;
-    sprintf(buffer,configPayloadTemplate, name, uniqueId);
+    sprintf(buffer,configPayloadTemplate, name, getUniqueId());
     len = strlen(buffer);
     if (this->device != NULL)
     {
@@ -66,13 +78,13 @@ char * HAEntity::getConfigPayload(char *buffer,
     if (add_command_topic)
     {
         buffer[len] = ',';
-        sprintf(buffer+len+1,configCommandTopicTemplate,component,uniqueId);
+        sprintf(buffer+len+1,configCommandTopicTemplate,component,getUniqueId());
         len = strlen(buffer);
     }
     if (add_state_topic)
     {
         buffer[len] = ',';
-        sprintf(buffer+len+1,configStateTopicTemplate,component,uniqueId);
+        sprintf(buffer+len+1,configStateTopicTemplate,component,getUniqueId());
         len = strlen(buffer);
     }
     buffer[len] = '}';
@@ -81,16 +93,16 @@ char * HAEntity::getConfigPayload(char *buffer,
 }
 
 char *HAEntity::getConfigTopic(char *buffer){
-    sprintf(buffer,configTopicTemplate,this->component,this->uniqueId);
+    sprintf(buffer,configTopicTemplate,this->component,getUniqueId());
     return buffer;
 }
 
 char *HAEntity::getCommandTopic(char *buffer) {
-    sprintf(buffer,commandTopicTemplate,component,uniqueId);
+    sprintf(buffer,commandTopicTemplate,component,getUniqueId());
     return buffer;
 }
 
 char *HAEntity::getStateTopic(char *buffer) {
-    sprintf(buffer,stateTopicTemplate,component,uniqueId);
+    sprintf(buffer,stateTopicTemplate,component,getUniqueId());
     return buffer;
 }

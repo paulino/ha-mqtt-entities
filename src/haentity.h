@@ -33,7 +33,8 @@ class HAEntity
         static const char *stateTopicTemplate;
 
         HADevice *device;
-        const char *uniqueId;
+        const char *id;
+        char *uniqueId; /** Derived from id and device */
         const char *name;
         const char *component;
 
@@ -49,7 +50,7 @@ class HAEntity
         HAEntity(const char *unique_id, const char *name,HADevice *device,
             const char *component);
 
-        inline const char *getUniqueId() {return this->uniqueId;}
+        const char *getUniqueId();
 
         /// Some entities do not have a command topic and returns NULL
         virtual char *getCommandTopic(char *buffer) ;

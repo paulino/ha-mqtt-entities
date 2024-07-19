@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+
+ - Fixed bug in unique_id when multiple devices are created
+ - Improved device constructor for later setup identifier and friendly name
+
 ## [1.0.3] - 2024-04-17
 
 - Fixed MQTT reconnection bug
