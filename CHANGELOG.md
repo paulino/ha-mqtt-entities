@@ -1,9 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [1.0.4] - 2024-08-10
 
  - Fixed bug in unique_id when multiple devices are created
  - Improved device constructor for later setup identifier and friendly name
+ - Added example for multiple devices and device
 
 ## [1.0.3] - 2024-04-17
 
