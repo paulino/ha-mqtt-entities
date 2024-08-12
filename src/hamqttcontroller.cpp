@@ -119,7 +119,6 @@ void HAMQTTController::loop() {
         if (millis() > delaySendState)
         {
             this->sendAllStates();
-            Serial.println("Send all states");
             delaySendState = millis() + (1000L*3600L*24L);
         }
         for (int i = 0 ; i < entityCounter ; i++)

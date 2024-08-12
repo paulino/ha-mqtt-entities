@@ -15,7 +15,7 @@ You must set the definitions in the code under SECRETS_H.
 #include<HaMqttEntities.h>
 
 // This file is not included in the repository only used for local testing
-// #include "secrets.h"
+#include "secrets.h"
 
 // You must set the next defines
 #ifndef SECRETS_H
@@ -32,10 +32,15 @@ PubSubClient mqtt_client(wifi_client);
 
 // HA Parts
 #define ENTITIES_COUNT 3
-#define HA_DEVICE_ID   "example04"
-#define HA_DEVICE_FRIENDLY_NAME "Example 4 HA-MQTT"
+#define HA_DEV_ID   "example04"
+#define HA_DEV_FRIENDLY_NAME "Example 4 HA-MQTT"
+#define HA_DEV_FIRMWARE_VERSION "1.0"
+#define HA_DEV_MANUFACTURER "Arduino"
+#define HA_DEV_MODEL "ESP32"
+#define HA_DEV_HARDWARE_VERSION "1.8.19"
 
-HADevice ha_device = HADevice(HA_DEVICE_ID,HA_DEVICE_FRIENDLY_NAME,"1.0");
+HADevice ha_device = HADevice(HA_DEV_ID,HA_DEV_FRIENDLY_NAME,
+    HA_DEV_FIRMWARE_VERSION,HA_DEV_MANUFACTURER,HA_DEV_MODEL,HA_DEV_HARDWARE_VERSION);
 HAText ha_text = HAText("text04uid","Input text",ha_device,100);
 HAButton ha_button = HAButton("button04uid","Calculate length",ha_device);
 HASelect ha_select = HASelect("select04uid","Select",ha_device,3);

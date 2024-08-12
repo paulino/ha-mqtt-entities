@@ -24,7 +24,6 @@ class HAEntity
     protected:
 
         static const char *configTopicTemplate;
-        static const char *configDeviceTemplate;
         static const char *configCommandTopicTemplate;
         static const char *configStateTopicTemplate;
         static const char *configPayloadTemplate;

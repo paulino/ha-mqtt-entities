@@ -4,39 +4,21 @@
 /* HA discovery template is
  <discovery_prefix>/<component>/[<node_id>/]<object_id>/config node_id is
  optional and will ignored in this implementation
- example:
-    {
-   "name":"Motion Sensor",
-   "device_class":"motion",
-   "state_topic":"homeassistant/binary_sensor/garden/state",
-   "unique_id":"garden01mot",
-   "device":{
-      "identifiers":"garden01",
-      "name":"Garden Surveillance",
-    }
-}
 */
 
 // Configuration topic
 const char *HAEntity::configTopicTemplate PROGMEM = "homeassistant/%s/%s/config";
 
-// Configuration payload divided in 4 parts
+// Configuration payload parts
 const char *HAEntity::configPayloadTemplate PROGMEM = "{\
 \"name\":\"%s\",\
-\"unique_id\":\"%s\"";
-
-const char *HAEntity::configDeviceTemplate PROGMEM = "\
-\"device\":{\
-\"identifiers\":\"%s\",\
-\"name\":\"%s\",\
-\"sw_version\":\"%s\"\
-}";
+\"uniq_id\":\"%s\"";
 
 const char *HAEntity::configCommandTopicTemplate PROGMEM =
-    "\"command_topic\": \"homeassistant/%s/%s/set\"";
+    "\"cmd_t\": \"homeassistant/%s/%s/set\"";
 
 const char *HAEntity::configStateTopicTemplate PROGMEM =
-    "\"state_topic\":\"homeassistant/%s/%s/state\"";
+    "\"stat_t\":\"homeassistant/%s/%s/state\"";
 
 const char *HAEntity::commandTopicTemplate PROGMEM = "homeassistant/%s/%s/set";
 const char *HAEntity::stateTopicTemplate  PROGMEM= "homeassistant/%s/%s/state";
@@ -69,12 +51,9 @@ char * HAEntity::getConfigPayload(char *buffer,
     if (this->device != NULL)
     {
         buffer[len] = ',';
-        sprintf(buffer+len+1,configDeviceTemplate,
-            device->getIdentifier(),
-            device->getName(),
-            device->getSwVersion());
+        this->device->getConfigPayload(buffer+len+1);
         len = strlen(buffer);
-    }
+    }    
     if (add_command_topic)
     {
         buffer[len] = ',';

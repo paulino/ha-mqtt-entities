@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+ - Added device attributes: hw_version, manufacturer, model
+ - Optimized discovery payload to use abbreviations (not finished)
+
 ## [1.0.4] - 2024-08-10
 
  - Fixed bug in unique_id when multiple devices are created
