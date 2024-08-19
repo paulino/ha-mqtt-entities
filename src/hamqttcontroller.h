@@ -11,8 +11,8 @@ with a pointer to the component or NULL if the topic is not recognized.
 #define __HAMQTTCONTROLLER_H__
 
 #include "haentity.h"
+#include <PubSubClient.h>
 
-class PubSubClient;
 
 /* Callback signature:
     void callback(HAEntity*, char* topic, byte* payload, unsigned int payload_length)
@@ -72,6 +72,8 @@ class HAMQTTController {
          *
          */
         void setCallback(HAMQTT_CALLBACK_SIGNATURE(callback));
+
+        void setAvailable(bool available, HADevice& device);
 
 };
 

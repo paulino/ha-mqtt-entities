@@ -11,6 +11,7 @@
 #include<hasensornumeric.h>
 #include<hasensortext.h>
 #include<haselect.h>
+#include<hasensorbinary.h>
 
 // Singleton instance
 HAMQTTController& HAMQTT = HAMQTTController::getInstance();

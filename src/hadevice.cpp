@@ -1,7 +1,10 @@
 #include "hadevice.h"
+#include "hamqttcontroller.h"
+
 #include <string.h>
 #include <stdio.h>
 #include <Arduino.h>
+
 
 const char *HADevice::configDeviceTemplate PROGMEM = "\
 \"dev\":{\
@@ -67,4 +70,8 @@ char * HADevice::getConfigPayload(char *buffer) {
     buffer[len++] = '}';
     buffer[len] = '\0';
     return buffer;
+}
+
+void HADevice::setAvailable(bool available) {
+    HAMQTTController::getInstance().setAvailable(available, *this);
 }

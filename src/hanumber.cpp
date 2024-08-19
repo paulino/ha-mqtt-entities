@@ -14,7 +14,7 @@ HANumber::HANumber(const char *unique_id, const char *name,
 
 HANumber::HANumber(const char *unique_id, const char *name,
     int min,int max,const int step):
-    HAEntity(unique_id,name,NULL,component) {
+    HAEntity(unique_id,name,component) {
         this->dirty = false;
         this->max = max;
         this->min = min;

@@ -9,7 +9,6 @@ HASensorNumeric::HASensorNumeric(const char *unique_id, const char *name,
     HASensorNumeric(unique_id,name,unit_of_measurement,precision)
 {
     this->device = &device;
-
 }
 HASensorNumeric::HASensorNumeric(const char *unique_id, const char *name,
     const char* unit_of_measurement, int precision) : HASensor(unique_id,name)

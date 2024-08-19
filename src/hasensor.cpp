@@ -4,12 +4,9 @@
 
 const char *HASensor::component PROGMEM  = "sensor";
 
-HASensor::HASensor(const char *unique_id, const char *name, HADevice& device) :
-    HASensor(unique_id,name) {
-        this->device = &device;
-}
-HASensor::HASensor(const char *unique_id, const char *name) :
-    HAEntity(unique_id,name,NULL,component) {
+HASensor::HASensor(const char *unique_id, const char *name, 
+    const char * component) :  HAEntity(unique_id,name,component) {
+    
 }
 
 void HASensor::onConnect(PubSubClient * client){

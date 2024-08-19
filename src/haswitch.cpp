@@ -14,7 +14,7 @@ HASwitch::HASwitch(const char *unique_id, const char *name, HADevice& device):
 }
 
 HASwitch::HASwitch(const char *unique_id, const char *name):
-    HAEntity(unique_id,name,NULL,component) {
+    HAEntity(unique_id,name,component) {
         this->dirty = false;
         this->state = false;
 

@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+ - Added availability 
  - Added device attributes: hw_version, manufacturer, model
- - Optimized discovery payload to use abbreviations (not finished)
+ - Added Binary Sensor
+ - Added configuration features: device_class and icon
+ - Optimized discovery payload to use abbreviations
 
 ## [1.0.4] - 2024-08-10
 
@@ -24,7 +27,5 @@
 - Added new example for HASensorNumeric to get a graph history in HomeAssistant
 
 ## [1.0.1] - 2024-03-17
-
-### Fixed
 
 - Fixed bug in HANumber configuration payload

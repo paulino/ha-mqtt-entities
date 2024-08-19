@@ -15,7 +15,7 @@ You must set the definitions in the code under SECRETS_H.
 #include<HaMqttEntities.h>
 
 // This file is not included in the repository only used for local testing
-#include "secrets.h"
+// #include "secrets.h"
 
 // You must set the next defines
 #ifndef SECRETS_H

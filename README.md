@@ -44,7 +44,7 @@ For more information on usage, see Examples. Future documentation will be added
 - [X] Button
 - [X] Text sensor
 - [X] Numeric sensor
-- [ ] Binary sensor
+- [X] Binary sensor
 - [ ] Event
 - [X] Number
 - [X] Switch
@@ -61,12 +61,25 @@ The library supports items marked:
 - [X] Name
 - [X] Device name
 - [ ] Availability
-- [ ] Device class
+- [X] Device class
 - [X] Unit of measurement
-- [ ] Icon
+- [X] Icon
 - [ ] Attributes
 
 Unchecked items will be supported in future versions.
+
+MQTT Device registry attributes supported:
+
+- [X] Name
+- [X] Manufacturer
+- [X] Model
+- [X] Software version
+- [X] Hardware version
+- [ ] Serial Number
+- [ ] Configuration URL
+- [ ] Connections
+- [ ] Suggested area
+- [ ] Via Device
 
 ## How to Use
 
@@ -124,6 +137,11 @@ void setup() {
 
 }
 ```
+
+**Other examples**:
+
+- Availability and icon: [availability.ino](examples/availability/availability.ino)
+- Class device: [sensorbinary.ino](examples/sensorbinary/sensorbinary.ino)
 
 ## Alternatives
 

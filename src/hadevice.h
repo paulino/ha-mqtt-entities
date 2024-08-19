@@ -34,7 +34,11 @@ class HADevice {
         inline void setHwVersion(const char *hw_version) 
             {this->hw_version = hw_version;}
 
-        char * getConfigPayload(char *buffer);
+        char *getConfigPayload(char *buffer);
+
+        /// Set the availability of all entities of the device
+        /// Only works for entities that have the availability feature enabled
+        void setAvailable(bool available);
 
 };
 #endif

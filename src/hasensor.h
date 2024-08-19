@@ -5,7 +5,7 @@
 
 class PubSubClient;
 class HADevice;
-
+/** Base class for sensor, it may not instantiate */
 class HASensor : public HAEntity {
     protected:
 
@@ -13,9 +13,8 @@ class HASensor : public HAEntity {
         bool dirty;
 
     public:
-        HASensor(const char *unique_id,const char *name,HADevice& device);
-        HASensor(const char *unique_id,const char *name);
-
+        HASensor(const char *unique_id, const char *name, 
+            const char * component = HASensor::component);
         inline bool isDirty() {return this->dirty;};
         virtual void onConnect(PubSubClient * client);
         virtual void onReceivedTopic(PubSubClient *, byte* payload,

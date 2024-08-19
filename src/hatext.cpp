@@ -15,7 +15,7 @@ HAText::HAText(const char *unique_id, const char *name, HADevice& device,
 
 
 HAText::HAText(const char *unique_id, const char *name, unsigned int max_size):
-    HAEntity(unique_id,name,NULL,component) {
+    HAEntity(unique_id,name,component) {
         this->maxSize = max_size;
         this->state = new char[max_size];
         this->state[0] = 0;

@@ -3,8 +3,14 @@
 
 - Board: ESP32*
 
-This example creates multiple devices and configure the device ID and friendly
-name in the setup function
+This example show the follow:
+
+- Multiple HA-devices in the same hardware device
+- Delayed device configuration in the setup function
+- Setting availability of one the device affected all entities of the device
+
+Usage: Turning on/off the switch of device 1 change the availability of the
+device 2.
 
 */
 
@@ -32,12 +38,21 @@ PubSubClient mqtt_client(wifi_client);
 // HA Parts
 #define ENTITIES_COUNT 3
 #define SW_VERSION "1.0.0"
-HADevice ha_device_1 = HADevice(SW_VERSION);
-HANumber ha_number_1 = HANumber("numberexample","Slicer",ha_device_1,1,100,1);
-HAText ha_text_1 = HAText("text","Input text",ha_device_1,100);
 
+#define DEVICE1_ID "hadev1"
+#define DEVICE1_NAME "Example: Device 1"
+
+#define DEVICE2_ID "hadev2"
+#define DEVICE2_NAME "Example: Device 2"
+
+// Device 1 definition
+HADevice ha_device_1 = HADevice(SW_VERSION);
+HASwitch ha_switch_1 = HASwitch("switch","Switch",ha_device_1);
+
+// Device 2 definition
 HADevice ha_device_2 = HADevice(SW_VERSION);
-HANumber ha_number_2 = HANumber("numberexample","Slicer",ha_device_2,1,100,1);
+HANumber ha_number_2 = HANumber("number","Slicer",ha_device_2,1,100,1);
+HAText ha_text_2 = HAText("text","Input text",ha_device_2,100);
 
 void ha_callback(HAEntity *entity, char *topic, byte *payload, unsigned int length);
 
@@ -46,20 +61,29 @@ void setup() {
     mqtt_client.setServer(MQTT_SERVER, MQTT_PORT);
 
     // Delayed device configuration
-    ha_device_1.setName("Example: Device 1");
-    ha_device_1.setIdentifier("device01");
-    ha_device_2.setName("Example: Device 2");
-    ha_device_2.setIdentifier("device02");
+    ha_device_1.setIdentifier(DEVICE1_ID);
+    ha_device_1.setName(DEVICE1_NAME);
 
-    // Initialize entities
-    HAMQTT.begin(mqtt_client,ENTITIES_COUNT);
-    HAMQTT.addEntity(ha_number_1);
-    HAMQTT.addEntity(ha_number_2);
-    HAMQTT.addEntity(ha_text_1);
+    ha_device_2.setIdentifier(DEVICE2_ID);
+    ha_device_2.setName(DEVICE2_NAME);
+    
+    ha_number_2.addFeature(HA_FEATURE_AVAILABILITY);
+    ha_text_2.addFeature(HA_FEATURE_AVAILABILITY);
+    
+    // Initial states
+    ha_number_2.setAvailable(true);
+    ha_text_2.setAvailable(true);
 
-    ha_number_1.setState(30);
+    ha_switch_1.setState(true);
     ha_number_2.setState(90);
-    ha_text_1.setState("Hello HomeAssistant");
+    ha_text_2.setState("Hello HomeAssistant");
+
+    // Initialize HA-MQTT
+    HAMQTT.begin(mqtt_client,ENTITIES_COUNT);
+    HAMQTT.addEntity(ha_switch_1);
+    HAMQTT.addEntity(ha_number_2);
+    HAMQTT.addEntity(ha_text_2);
+
     HAMQTT.setCallback(ha_callback);
 
     // start wifi
@@ -85,11 +109,13 @@ void loop() {
     Entity can be NULL when the received topic is not related to any entity.
     This is useful to handle other topics with the same mqtt client.
 */
-void ha_callback(HAEntity *entity, char *topic, byte *payload, unsigned int length){
-    if(entity != NULL) {
-        Serial.printf("Changed entity: unique_id='%s' \n",entity->getUniqueId());
+void ha_callback(HAEntity *entity, char *topic, byte *payload, unsigned int length) {
+    if(entity == &ha_switch_1) {
+        if(ha_switch_1.getState()) {            
+            ha_device_2.setAvailable(true);
+        } else {
+            ha_device_2.setAvailable(false);
+        }
+        
     }
-    else
-        Serial.println("Callback called from other subscription");
-
 }

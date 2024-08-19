@@ -1,22 +1,22 @@
-#include <PubSubClient.h>
 #include"hamqttcontroller.h"
 
 const char *HAMQTTController::topicHass PROGMEM = "homeassistant/status";
 
 HAMQTTController *HAMQTTController::instance = NULL;
 
-void HAMQTTController::pubSubClientHandler(char* topic, byte* payload, unsigned int length)
+void HAMQTTController::pubSubClientHandler(char* topic, byte* payload, 
+    unsigned int length)
 {
     instance->mqttOnReceived(topic,payload,length);
 }
 
-HAMQTTController& HAMQTTController::getInstance(){
+HAMQTTController& HAMQTTController::getInstance() {
     if (instance == NULL)
         instance = new HAMQTTController();
     return *instance;
 }
 
-HAMQTTController::HAMQTTController(){
+HAMQTTController::HAMQTTController() {
     this->mqttClient = NULL;
     this->entities = NULL;
     this->entityCounter = 0;
@@ -24,7 +24,7 @@ HAMQTTController::HAMQTTController(){
     this->state = Disconnected;
 }
 
-void HAMQTTController::begin(PubSubClient& mqtt_client,int component_count){
+void HAMQTTController::begin(PubSubClient& mqtt_client,int component_count) {
     this->mqttClient = &mqtt_client;
     this->entities = new HAEntity*[component_count];
     this->entityCounter = 0;
@@ -65,9 +65,10 @@ void HAMQTTController::onConnect() {
 
 void HAMQTTController::sendAllStates() {
     HAEntity *entity;
-    for (int i = 0; i < this->entityCounter; i++){
+    for (int i = 0; i < this->entityCounter; i++) {
         entity = this->entities[i];
         entity->sendState(this->mqttClient);
+        entity->sendAvailability(this->mqttClient);
     }
 }
 
@@ -77,7 +78,7 @@ bool HAMQTTController::mqttOnReceived(char *topic, byte *payload,
     char cmd_topic_buffer[HA_MAX_TOPIC_LENGTH];
 
     if (strcmp(topic,topicHass) == 0 && length > 3 && payload[1] == 'n') {
-        // Hass topic is received then hass has been restarted and data is required
+        // HA topic is received then HA has been restarted and data is required
         this->onConnect();
         return false;
     }
@@ -126,9 +127,21 @@ void HAMQTTController::loop() {
                 entity = entities[i];
                 if (entity->isDirty())
                     entity->sendState(mqttClient);
+                entity->sendAvailability(mqttClient);
+                if (!mqttClient->connected())
+                    break;
+
             }
         state = mqttClient->loop()?Connected:Disconnected;
 
     }
 }
 
+void HAMQTTController::setAvailable(bool available, HADevice& device) {
+    HAEntity *entity;
+    for (int i = 0; i < this->entityCounter; i++){
+        entity = this->entities[i];
+        if (entity->getDevice() == &device)
+            entity->setAvailable(available);
+    }
+}
