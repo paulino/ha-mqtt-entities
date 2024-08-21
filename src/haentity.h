@@ -72,8 +72,8 @@ class HAEntity
         virtual void onReceivedTopic(PubSubClient *, byte* payload,
             unsigned int length) = 0;
 
-        // Action to be performed when the state changes by default it does nothing
-        // It can be redefined in the derived class
+        /// Action to be performed when the state changes by default it does nothing
+        /// It can be redefined in the derived class
         virtual void onStateChange() {;}
 
         /// Add predefined feature to the entity
@@ -84,7 +84,8 @@ class HAEntity
 
         /// It only works if previously the availability feature has been added
         void setAvailable(bool available);
-        void sendAvailability(PubSubClient *);
+        void sendAvailability(PubSubClient *, bool force = false);
+        char *getAvailabilityTopic(char *buffer);
 
 };
 

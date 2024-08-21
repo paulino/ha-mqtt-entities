@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+ - Fixed bug in reconnection loop
+ - Added support for LWT
  - Added availability 
  - Added device attributes: hw_version, manufacturer, model
  - Added Binary Sensor

@@ -37,7 +37,7 @@ PubSubClient mqtt_client(wifi_client);
 // This example optimizes the memory usage by using PSTR to store the strings 
 // in flash memory
 #define SW_VERSION PSTR("1.0.0")
-#define IDENTIFIER PSTR("ha-mqtt-entities")
+#define IDENTIFIER PSTR("example_availability")
 #define DEVICE_NAME PSTR("Example of availability")
 
 HADevice ha_device = HADevice(IDENTIFIER,DEVICE_NAME,SW_VERSION);
@@ -72,9 +72,9 @@ void setup()
 
 void loop()
 {
-    if (WiFi.status() == WL_CONNECTED && !HAMQTT.connected())
+    if (WiFi.status() == WL_CONNECTED && !mqtt_client.connected())
     {
-        if (HAMQTT.connect("examples", MQTT_USER, MQTT_PASSWORD))
+        if (mqtt_client.connect("examples", MQTT_USER, MQTT_PASSWORD))
             Serial.println("Connected to MQTT");
         else
         {

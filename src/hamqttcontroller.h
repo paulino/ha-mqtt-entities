@@ -35,7 +35,7 @@ class HAMQTTController {
         HAEntity **entities;
         int entityCounter;
         static void pubSubClientHandler(char* topic, byte* payload, unsigned int length);
-        enum State {Connected, Disconnected } state ;
+        enum State {Connected, Connecting, Disconnected } state ;
 
     public:
         static HAMQTTController& getInstance();
@@ -51,7 +51,9 @@ class HAMQTTController {
          * but if it is not used, after connecting to MQTT, the onConnect
          * method must be called manually.
          */
+        // DEPRECATED: Remove, connect from pubsubclient is enough
         boolean connect(const char *id, const char *user, const char *pass);
+        // DEPRECATED: Use mqttClient->connected()
         inline boolean connected() { return this->mqttClient->connected(); }
         void onConnect();
         void loop();

@@ -1,5 +1,9 @@
 #include"hamqttcontroller.h"
 
+// Delay the first state send, HA need some time to process MQTT discovery 
+// and enable the entities
+#define DELAY_SEND_STATES 3000
+
 const char *HAMQTTController::topicHass PROGMEM = "homeassistant/status";
 
 HAMQTTController *HAMQTTController::instance = NULL;
@@ -51,24 +55,15 @@ void HAMQTTController::onConnect() {
     for (int i = 0; i < this->entityCounter; i++){
         entity = this->entities[i];
         entity->onConnect(this->mqttClient);
-        if (!this->mqttClient->loop())
-        {
-            this->state = Disconnected;
-            break;
-        }
     }
-    // Delay the first state send
-    delaySendState = millis() + 2000;
-    this->state = Connected;
-
 }
 
 void HAMQTTController::sendAllStates() {
     HAEntity *entity;
     for (int i = 0; i < this->entityCounter; i++) {
         entity = this->entities[i];
-        entity->sendState(this->mqttClient);
-        entity->sendAvailability(this->mqttClient);
+        entity->sendState(this->mqttClient);        
+        entity->sendAvailability(this->mqttClient,true);
     }
 }
 
@@ -105,23 +100,32 @@ void HAMQTTController::setCallback(HAMQTT_CALLBACK_SIGNATURE(callback)) {
 
 void HAMQTTController::loop() {
     HAEntity *entity;
+    
     if (mqttClient == NULL)
         return;
+    
     if (!mqttClient->connected()) {
         this->state = Disconnected;
-        return ;
+        return;
     }
 
-    if(this->state == Disconnected )
-    {
+    if(this->state == Disconnected && this->mqttClient->connected()) {
         this->onConnect();
-    } else if(state == Connected)
+        // Delay the first state send, HA need some time to process MQTT discovery 
+        delaySendState = millis();
+        this->state = Connecting;
+    } 
+    else if(state == Connecting)
     {
-        if (millis() > delaySendState)
+        if (millis() - delaySendState  > DELAY_SEND_STATES )
         {
             this->sendAllStates();
-            delaySendState = millis() + (1000L*3600L*24L);
+            delaySendState = millis() - (1000L*3600L*24L);
+            state = Connected;
         }
+    }
+    else if(state == Connected) 
+    {
         for (int i = 0 ; i < entityCounter ; i++)
             {
                 entity = entities[i];
@@ -132,9 +136,8 @@ void HAMQTTController::loop() {
                     break;
 
             }
-        state = mqttClient->loop()?Connected:Disconnected;
-
     }
+    state = mqttClient->loop()?state:Disconnected;
 }
 
 void HAMQTTController::setAvailable(bool available, HADevice& device) {

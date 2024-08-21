@@ -141,15 +141,21 @@ void HAEntity::setAvailable(bool available) {
         this->available = HA_AVTY_PENDING_OFF;
 }
 
-void HAEntity::sendAvailability(PubSubClient *mqttClient) {
+void HAEntity::sendAvailability(PubSubClient *mqttClient,bool force) {
     if(this->available == HA_AVTY_DISABLED)
         return;
-    if (this->available != HA_AVTY_PENDING_ON &&
+    if (force && this->available == HA_AVTY_ON)
+        this->available = HA_AVTY_PENDING_ON;
+    else if (force && this->available == HA_AVTY_OFF)
+        this->available = HA_AVTY_PENDING_OFF;
+        
+    if ( this->available != HA_AVTY_PENDING_ON &&
         this->available != HA_AVTY_PENDING_OFF)
         return;
+
     char topic[HA_MAX_TOPIC_LENGTH];
     char payload[HA_MAX_PAYLOAD_LENGTH];
-    sprintf(topic,availabilityTopicTemplate,component,getUniqueId());
+    getAvailabilityTopic(topic);
     if (this->available == HA_AVTY_PENDING_ON)
     {
         sprintf(payload,PSTR("online"));
@@ -164,4 +170,10 @@ void HAEntity::sendAvailability(PubSubClient *mqttClient) {
             return;
         this->available = HA_AVTY_OFF;
     }
+}
+
+char *HAEntity::getAvailabilityTopic(char *buffer) 
+{
+    sprintf(buffer,availabilityTopicTemplate,component,getUniqueId());
+    return buffer;
 }
