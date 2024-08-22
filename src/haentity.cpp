@@ -43,6 +43,7 @@ HAEntity::HAEntity(const char *id,const char *name,const char *component,
     this->name = name;
     this->device = ha_device;
     this->available = HA_AVTY_DISABLED;
+    this->features = NULL;
 }
 
 const char *HAEntity::getUniqueId() {
@@ -88,7 +89,7 @@ char *HAEntity::getConfigPayload(char *buffer,
         len = strlen(buffer);
     }
     // Add features
-    HAKVPairList *pair = &(features);
+    HAKVPairList *pair = features;
     while(pair!=NULL && pair->getKey() != NULL)
     {
         buffer[len] = ',';
@@ -125,11 +126,14 @@ void HAEntity::addFeature(int key, const char *value) {
     if (key == HA_FEATURE_AVAILABILITY)
         this->available = HA_AVTY_PENDING_ON;
     else
-        features.append(featureKeys[key],value);
+        features->append(featureKeys[key],value);
 }
 
 void HAEntity::addFeature(const char *key, const char *value) {
-    features.append(key,value);
+    if (this->features == NULL)
+        this->features = new HAKVPairList(key,value);
+    else
+        features->append(key,value);
 }
 
 void HAEntity::setAvailable(bool available) {

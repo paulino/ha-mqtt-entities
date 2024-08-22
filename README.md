@@ -60,7 +60,7 @@ The library supports items marked:
 
 - [X] Name
 - [X] Device name
-- [ ] Availability
+- [X] Availability
 - [X] Device class
 - [X] Unit of measurement
 - [X] Icon
@@ -109,8 +109,8 @@ void loop() {
 
     digitalWrite(PIN_LED, on_off);
 
-    if (!HAMQTT.connected())
-        HAMQTT.connect("HAMQTTExample","user","password");
+    if (!mqtt_client.connected())
+        mqtt_client.connect("HAMQTTExample","user","password");
 
     HAMQTT.loop();
 }

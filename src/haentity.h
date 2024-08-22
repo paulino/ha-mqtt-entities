@@ -41,7 +41,7 @@ class HAEntity
         char *uniqueId; /** Derived from id and device */
         const char *name;
         const char *component;
-        HAKVPairList features;
+        HAKVPairList *features;
         int8_t available;
 
         char *getConfigTopic(char *buffer);

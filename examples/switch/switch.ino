@@ -43,8 +43,8 @@ void setup() {
 }
 
 void loop() {
-    if(WiFi.status() == WL_CONNECTED && !HAMQTT.connected()) {
-         if( HAMQTT.connect("examples",MQTT_USER,MQTT_PASSWORD) )
+    if(WiFi.status() == WL_CONNECTED && !mqtt_client.connected()) {
+         if( mqtt_client.connect("examples",MQTT_USER,MQTT_PASSWORD) )
             Serial.println("Connected to MQTT");
          else
          {

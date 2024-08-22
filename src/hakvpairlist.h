@@ -9,7 +9,7 @@ class HAKVPairList {
         const char *value;
         HAKVPairList *next;
     public:
-        HAKVPairList(const char* key = NULL, const char *value = NULL);
+        HAKVPairList(const char* key , const char *value );
         void append(const char *key, const char *value=NULL);
         inline const char *getKey() {return key;}
         inline const char *getValue() {return value;}

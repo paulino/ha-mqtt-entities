@@ -49,8 +49,8 @@ void loop() {
     static unsigned long ten_second_delay = millis() + 10000;
     static bool motion_detected = false;
     HAMQTT.loop();
-    if(!HAMQTT.connected() &&
-            !HAMQTT.connect("examples",MQTT_USER,MQTT_PASSWORD))
+    if(!mqtt_client.connected() &&
+            !mqtt_client.connect("examples",MQTT_USER,MQTT_PASSWORD))
         delay(1000);
 
     if(millis() > ten_second_delay) {

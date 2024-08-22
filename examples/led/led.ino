@@ -53,7 +53,7 @@ void setup() {
 void loop() {
     bool on_off = ha_switch.getState();
     digitalWrite(PIN_LED, on_off);
-    if (!HAMQTT.connected())
-        HAMQTT.connect("HAMQTTExample",MQTT_USER,MQTT_PASSWORD);
+    if (!mqtt_client.connected())
+        mqtt_client.connect("HAMQTTExample",MQTT_USER,MQTT_PASSWORD);
     HAMQTT.loop();
 }

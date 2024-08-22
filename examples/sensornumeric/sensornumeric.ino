@@ -55,8 +55,8 @@ void loop() {
     static unsigned long one_second_delay = millis() + 1000;
     static float counter = 0;
     HAMQTT.loop();
-    if(!HAMQTT.connected() &&
-            !HAMQTT.connect("examples",MQTT_USER,MQTT_PASSWORD))
+    if(!mqtt_client.connected() &&
+            !mqtt_client.connect("examples",MQTT_USER,MQTT_PASSWORD))
         delay(1000);
 
     if(millis() > one_second_delay) {
