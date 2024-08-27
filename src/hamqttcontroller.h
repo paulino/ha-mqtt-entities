@@ -29,6 +29,7 @@ class HAMQTTController {
         HAMQTTController();
 
         unsigned long int delaySendState;
+        HADevice *lastWillDevice;
 
     protected:
         PubSubClient *mqttClient;
@@ -51,9 +52,7 @@ class HAMQTTController {
          * but if it is not used, after connecting to MQTT, the onConnect
          * method must be called manually.
          */
-        // DEPRECATED: Remove, connect from pubsubclient is enough
         boolean connect(const char *id, const char *user, const char *pass);
-        // DEPRECATED: Use mqttClient->connected()
         inline boolean connected() { return this->mqttClient->connected(); }
         void onConnect();
         void loop();

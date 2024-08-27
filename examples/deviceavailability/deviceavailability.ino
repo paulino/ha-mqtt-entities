@@ -1,16 +1,14 @@
-/* ha-mqtt-entities library example of availability for entities
+/* ha-mqtt-entities library example of availability and last will
 
 - Board: ESP32*
 
-This example shows how to
+This library implements broker lastwill at device level sharing the availability
+topic with all the entities of the device.
 
-- Creating a Text Sensor with Availability
-- Customize the test sensor icon
-- Create a switch to control the availability of the text sensor
-- Optimize memory usage by using PSTR to store strings in flash memory
+Note: The availability feature at entity level has precedence over the device
+availability feature. If the device has the availability feature enabled, all
+entities of the device must be disabled the availability feature.
 
-NOTE: The availability feature at entity level it is not compatible with
-    last-will feature at device level in this library.
 */
 
 #include <Arduino.h>
@@ -35,16 +33,16 @@ WiFiClient wifi_client;
 PubSubClient mqtt_client(wifi_client);
 
 // HA Parts
-#define ENTITIES_COUNT 3
-// This example optimizes the memory usage by using PSTR to store the strings
-// in flash memory
+#define ENTITIES_COUNT 2
 #define SW_VERSION PSTR("1.0.0")
-#define IDENTIFIER PSTR("example_availability")
-#define DEVICE_NAME PSTR("Example of availability")
+#define IDENTIFIER PSTR("hamqen")
+#define DEVICE_NAME PSTR("Example of availability and last will")
 
 HADevice ha_device = HADevice(IDENTIFIER,DEVICE_NAME,SW_VERSION);
-HAText ha_text = HAText(PSTR("text"), PSTR("Input text"), ha_device, 100);
-HASwitch ha_switch = HASwitch(PSTR("switch"), PSTR("Test availability"), ha_device);
+HASwitch ha_switch = HASwitch(
+    PSTR("switch-id"), PSTR("My switch"), ha_device);
+HASensorBinary ha_sensor = HASensorBinary(
+    PSTR("sensor-id"), PSTR("My binary sensor"), ha_device);
 
 void ha_callback(HAEntity *entity, char *topic, byte *payload, unsigned int length);
 
@@ -55,16 +53,15 @@ void setup()
 
     // Initialize entities
     HAMQTT.begin(mqtt_client, ENTITIES_COUNT);
-    HAMQTT.addEntity(ha_text);
     HAMQTT.addEntity(ha_switch);
+    HAMQTT.addEntity(ha_sensor);
 
-    ha_text.addFeature(HA_FEATURE_AVAILABILITY);
-    ha_text.addFeature(HA_FEATURE_ICON,"mdi:lightbulb");
+    // Features
+    ha_device.addFeature(HA_FEATURE_AVAILABILITY);
+    ha_device.setAvailable(true);
 
     // Initial states
     ha_switch.setState(true);
-    ha_text.setAvailable(true);
-    ha_text.setState("Hello HomeAssistant");
 
     HAMQTT.setCallback(ha_callback);
 
@@ -76,6 +73,7 @@ void loop()
 {
     if (WiFi.status() == WL_CONNECTED && !HAMQTT.connected())
     {
+        // The connect method includes the last will in the pubsub client
         if (HAMQTT.connect("examples", MQTT_USER, MQTT_PASSWORD))
             Serial.println("Connected to MQTT");
         else
@@ -86,6 +84,7 @@ void loop()
     }
     HAMQTT.loop();
     delay(50);
+
 }
 
 /* Callback from HA-MQTT entities. It is called when an entity changes its state.
@@ -96,14 +95,5 @@ void loop()
 void ha_callback(HAEntity *entity, char *topic, byte *payload, unsigned int length)
 {
     if (entity == &ha_switch)
-    {
-        if (ha_switch.getState())
-        {
-            ha_text.setAvailable(true);
-        }
-        else
-        {
-            ha_text.setAvailable(false);
-        }
-    }
+        Serial.println("Switch changed");
 }

@@ -1,5 +1,6 @@
 #include "hadevice.h"
 #include "hamqttcontroller.h"
+#include "haconsts.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -12,7 +13,13 @@ const char *HADevice::configDeviceTemplate PROGMEM = "\
 \"name\":\"%s\",\
 \"sw\":\"%s\"";
 
-HADevice::HADevice(const char *identifier,  const char *name, 
+
+// Available topic shared by all entities
+const char *HADevice::availabilityTopicTemplate PROGMEM = \
+    HA_TOPIC_HEAD"/%s/available";
+
+
+HADevice::HADevice(const char *identifier,  const char *name,
     const char *sw_version, const char *manufacturer, const char *model,
     const char *hw_version ) {
     this->setIdentifier(identifier);
@@ -52,7 +59,7 @@ void HADevice::setName(const char *name) {
 
 char * HADevice::getConfigPayload(char *buffer) {
     int len;
-    sprintf(buffer, configDeviceTemplate, 
+    sprintf(buffer, configDeviceTemplate,
         this->identifier, this->name, this->sw_version);
     if (this->manufacturer != NULL) {
         len = strlen(buffer);
@@ -73,5 +80,53 @@ char * HADevice::getConfigPayload(char *buffer) {
 }
 
 void HADevice::setAvailable(bool available) {
+    if (this->available != HA_AVTY_DISABLED)
+    {
+        if (available && this->available != HA_AVTY_ON)
+            this->available = HA_AVTY_PENDING_ON;
+        else if (!available && this->available != HA_AVTY_OFF)
+            this->available = HA_AVTY_PENDING_OFF;
+    }
     HAMQTTController::getInstance().setAvailable(available, *this);
+}
+
+void HADevice::addFeature(int key, const char *value) {
+    if (key == HA_FEATURE_AVAILABILITY)
+        this->available = HA_AVTY_PENDING_ON;
+
+}
+
+char *HADevice::getAvailabilityTopic(char *buffer)
+{
+    sprintf(buffer,availabilityTopicTemplate,this->identifier);
+    return buffer;
+}
+
+void HADevice::sendAvailable(PubSubClient *mqttClient,bool force) {
+    // TODO: Create a new class called HAAvalability
+    if(this->available == HA_AVTY_DISABLED)
+        return;
+    if (force && this->available == HA_AVTY_ON)
+        this->available = HA_AVTY_PENDING_ON;
+    else if (force && this->available == HA_AVTY_OFF)
+        this->available = HA_AVTY_PENDING_OFF;
+
+    if ( this->available != HA_AVTY_PENDING_ON &&
+        this->available != HA_AVTY_PENDING_OFF)
+        return;
+
+    char topic[HA_MAX_TOPIC_LENGTH];
+    getAvailabilityTopic(topic);
+    if (this->available == HA_AVTY_PENDING_ON)
+    {
+        if (! mqttClient->publish(topic,"online"))
+            return;
+        this->available = HA_AVTY_ON;
+    }
+    else if (this->available == HA_AVTY_PENDING_OFF)
+    {
+        if (! mqttClient->publish(topic,"offline"))
+            return;
+        this->available = HA_AVTY_OFF;
+    }
 }

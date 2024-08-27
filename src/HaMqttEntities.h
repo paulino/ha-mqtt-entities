@@ -1,6 +1,7 @@
 #ifndef __HAMQTT_H__
 #define __HAMQTT_H__
 
+#include<haconsts.h>
 #include<hadevice.h>
 #include<hamqttcontroller.h>
 

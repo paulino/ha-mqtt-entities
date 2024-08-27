@@ -29,7 +29,8 @@ It is only tested on some ESP32
   info](https://www.home-assistant.io/integrations/mqtt/)].
 - For simple designs, HA entities can be created without a device.
 - For complex designs, HA entities can be grouped into a device (recommended
-  solution)
+  solution).
+- Broker's last will for availability is supported at the device level.
 - MQTT callbacks are supported in non-exclusive mode, but it is not necessary to
   use them. The state of the entities is updated when the MQTT topic is received
   and they can be polled in the main loop.
@@ -109,8 +110,8 @@ void loop() {
 
     digitalWrite(PIN_LED, on_off);
 
-    if (!mqtt_client.connected())
-        mqtt_client.connect("HAMQTTExample","user","password");
+    if (!HAMQTT.connected())
+        HAMQTT.connect("HAMQTTExample","user","password");
 
     HAMQTT.loop();
 }

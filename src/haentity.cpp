@@ -1,18 +1,14 @@
 #include"haentity.h"
 #include"hadevice.h"
+#include"haconsts.h"
 
 #include <PubSubClient.h>
+
 
 /* HA discovery template is
  <discovery_prefix>/<component>/[<node_id>/]<object_id>/config node_id is
  optional and will ignored in this implementation
 */
-
-#define HA_AVTY_OFF 0
-#define HA_AVTY_ON 1
-#define HA_AVTY_PENDING_ON 2
-#define HA_AVTY_PENDING_OFF 3
-#define HA_AVTY_DISABLED 4
 
 // Configuration topic
 const char *HAEntity::configTopicTemplate PROGMEM = "homeassistant/%s/%s/config";
@@ -25,7 +21,7 @@ const char *HAEntity::configPayloadTemplate PROGMEM = "{\
 
 const char *HAEntity::commandTopicTemplate PROGMEM = "homeassistant/%s/%s/set";
 const char *HAEntity::stateTopicTemplate PROGMEM = "homeassistant/%s/%s/state";
-const char *HAEntity::availabilityTopicTemplate PROGMEM = 
+const char *HAEntity::availabilityTopicTemplate PROGMEM =
     "homeassistant/%s/%s/available";
 
 
@@ -60,7 +56,7 @@ const char *HAEntity::getUniqueId() {
 char *HAEntity::getConfigPayload(char *buffer,
         bool add_command_topic,bool add_state_topic) {
     int len;
-    sprintf(buffer,configPayloadTemplate, component,getUniqueId(), name, 
+    sprintf(buffer,configPayloadTemplate, component,getUniqueId(), name,
         getUniqueId());
     len = strlen(buffer);
     if (this->device != NULL)
@@ -68,7 +64,7 @@ char *HAEntity::getConfigPayload(char *buffer,
         buffer[len] = ',';
         this->device->getConfigPayload(buffer+len+1);
         len = strlen(buffer);
-    }    
+    }
     if (add_command_topic)
     {
         buffer[len] = ',';
@@ -81,11 +77,20 @@ char *HAEntity::getConfigPayload(char *buffer,
         sprintf(buffer+len+1, PSTR("\"stat_t\":\"~/state\""));
         len = strlen(buffer);
     }
-    // Availability if set
+    // Availability if set in the entity or in the device (common to all entities)
     if (this->available != HA_AVTY_DISABLED)
     {
         buffer[len] = ',';
         sprintf(buffer+len+1,PSTR("\"avty_t\":\"~/available\""));
+        len = strlen(buffer);
+    } else if (this->device != NULL && this->device->getAvailability())
+    {
+        buffer[len] = ',';
+        sprintf(buffer+len+1,PSTR("\"avty_t\":\""));
+        len = strlen(buffer);
+        this->device->getAvailabilityTopic(buffer+len);
+        len = strlen(buffer);
+        sprintf(buffer+len,"\"");
         len = strlen(buffer);
     }
     // Add features
@@ -139,20 +144,20 @@ void HAEntity::addFeature(const char *key, const char *value) {
 void HAEntity::setAvailable(bool available) {
     if (this->available == HA_AVTY_DISABLED)
         return;
-    if (available && this->available != HA_AVTY_ON) 
+    if (available && this->available != HA_AVTY_ON)
         this->available = HA_AVTY_PENDING_ON;
     else if (!available && this->available != HA_AVTY_OFF)
         this->available = HA_AVTY_PENDING_OFF;
 }
 
-void HAEntity::sendAvailability(PubSubClient *mqttClient,bool force) {
+void HAEntity::sendAvailable(PubSubClient *mqttClient,bool force) {
     if(this->available == HA_AVTY_DISABLED)
         return;
     if (force && this->available == HA_AVTY_ON)
         this->available = HA_AVTY_PENDING_ON;
     else if (force && this->available == HA_AVTY_OFF)
         this->available = HA_AVTY_PENDING_OFF;
-        
+
     if ( this->available != HA_AVTY_PENDING_ON &&
         this->available != HA_AVTY_PENDING_OFF)
         return;
@@ -176,7 +181,7 @@ void HAEntity::sendAvailability(PubSubClient *mqttClient,bool force) {
     }
 }
 
-char *HAEntity::getAvailabilityTopic(char *buffer) 
+char *HAEntity::getAvailabilityTopic(char *buffer)
 {
     sprintf(buffer,availabilityTopicTemplate,component,getUniqueId());
     return buffer;

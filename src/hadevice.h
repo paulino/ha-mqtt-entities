@@ -2,11 +2,17 @@
 #define __HA_DEVICE_H__
 
 #include <cstddef>
+#include <cstdint>
+
+#include "haconsts.h"
+
+class PubSubClient;
 
 class HADevice {
     protected:
         static const char *configDeviceTemplate;
-       
+        static const char *availabilityTopicTemplate;
+
         char *identifier;
         char *name;
         const char *sw_version;
@@ -14,10 +20,12 @@ class HADevice {
         const char *manufacturer;
         const char *model;
 
+        int8_t available;
+
         HADevice();
 
     public:
-        HADevice(const char *identifier, const char *name, 
+        HADevice(const char *identifier, const char *name,
             const char *sw_version, const char *manufacturer = NULL,
             const char *model = NULL, const char *hw_version = NULL);
 
@@ -31,14 +39,21 @@ class HADevice {
         // Not use dynamic or shared buffers, string is not copied
         inline void setManufacturer(const char *mf) {this->manufacturer = mf;}
         inline void setModel(const char *model) {this->model = model;}
-        inline void setHwVersion(const char *hw_version) 
+        inline void setHwVersion(const char *hw_version)
             {this->hw_version = hw_version;}
 
+        /// Add others predefined feature to the device
+        void addFeature(int key, const char *value = NULL);
         char *getConfigPayload(char *buffer);
 
-        /// Set the availability of all entities of the device
-        /// Only works for entities that have the availability feature enabled
+        /// Set the available state of all entities of the device
         void setAvailable(bool available);
+        /// Returns true if the availability feature of the device is enabled
+        inline bool getAvailability() {return available != HA_AVTY_DISABLED;}
+        char *getAvailabilityTopic(char *buffer);
+        void sendAvailable(PubSubClient *mqttClient,bool force);
+
+
 
 };
 #endif

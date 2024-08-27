@@ -7,10 +7,6 @@
 #include <Arduino.h>
 #include "hakvpairlist.h"
 
-#define HA_FEATURE_AVAILABILITY -1
-#define HA_FEATURE_DEVICE_CLASS 0
-#define HA_FEATURE_ICON 1
-
 #ifndef HA_MAX_TOPIC_LENGTH
 #define HA_MAX_TOPIC_LENGTH 128
 #endif
@@ -78,13 +74,13 @@ class HAEntity
 
         /// Add predefined feature to the entity
         void addFeature(int key, const char *value = NULL);
-        
+
         /// Add not predefined feature to the entity
         void addFeature(const char *key, const char *value);
 
         /// It only works if previously the availability feature has been added
         void setAvailable(bool available);
-        void sendAvailability(PubSubClient *, bool force = false);
+        void sendAvailable(PubSubClient *, bool force = false);
         char *getAvailabilityTopic(char *buffer);
 
 };
