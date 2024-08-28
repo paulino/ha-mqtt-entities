@@ -71,10 +71,10 @@ void setup() {
 }
 
 void loop() {
-    if(WiFi.status() == WL_CONNECTED && !mqtt_client.connected())
+    if(WiFi.status() == WL_CONNECTED && !HAMQTT.connected())
     {
         Serial.println("Connecting to MQTT...");
-        if (mqtt_client.connect("examples",MQTT_USER,MQTT_PASSWORD))
+        if (HAMQTT.connect("examples",MQTT_USER,MQTT_PASSWORD))
             Serial.println("Connected to MQTT");
         else {
             Serial.print("Failed to connect to MQTT, retry in 5 seconds...");

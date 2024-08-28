@@ -66,10 +66,10 @@ void setup() {
 
     ha_device_2.setIdentifier(DEVICE2_ID);
     ha_device_2.setName(DEVICE2_NAME);
-    
+
     ha_number_2.addFeature(HA_FEATURE_AVAILABILITY);
     ha_text_2.addFeature(HA_FEATURE_AVAILABILITY);
-    
+
     // Initial states
     ha_number_2.setAvailable(true);
     ha_text_2.setAvailable(true);
@@ -91,8 +91,8 @@ void setup() {
 }
 
 void loop() {
-    if(WiFi.status() == WL_CONNECTED && !mqtt_client.connected()) {
-         if( mqtt_client.connect("examples",MQTT_USER,MQTT_PASSWORD))
+    if(WiFi.status() == WL_CONNECTED && !HAMQTT.connected()) {
+         if( HAMQTT.connect("examples",MQTT_USER,MQTT_PASSWORD))
             Serial.println("Connected to MQTT");
          else
          {
@@ -111,11 +111,11 @@ void loop() {
 */
 void ha_callback(HAEntity *entity, char *topic, byte *payload, unsigned int length) {
     if(entity == &ha_switch_1) {
-        if(ha_switch_1.getState()) {            
+        if(ha_switch_1.getState()) {
             ha_device_2.setAvailable(true);
         } else {
             ha_device_2.setAvailable(false);
         }
-        
+
     }
 }

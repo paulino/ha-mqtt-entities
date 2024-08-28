@@ -58,8 +58,8 @@ void setup() {
 }
 
 void loop() {
-    if(!mqtt_client.connected() &&
-            !mqtt_client.connect("examples",MQTT_USER,MQTT_PASSWORD))
+    if(!HAMQTT.connected() &&
+            !HAMQTT.connect("examples",MQTT_USER,MQTT_PASSWORD))
         delay(1000);
     HAMQTT.loop();
 }

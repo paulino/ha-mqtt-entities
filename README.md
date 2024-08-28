@@ -57,7 +57,7 @@ as *Alarms*,*Cameras* are not planned to be supported.
 
 ## HA MQTT properties supported (and not)
 
-The library supports items marked:
+The library supports items marked for entities
 
 - [X] Name
 - [X] Device name
@@ -65,7 +65,10 @@ The library supports items marked:
 - [X] Device class
 - [X] Unit of measurement
 - [X] Icon
+- [X] Entity category
+- [X] Other properties not implicitly declared
 - [ ] Attributes
+
 
 Unchecked items will be supported in future versions.
 

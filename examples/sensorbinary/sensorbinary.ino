@@ -1,4 +1,4 @@
-/* ha-mqtt-entities library example of a binary sensor with device class set to 
+/* ha-mqtt-entities library example of a binary sensor with device class set to
  motion
 
 - Board: ESP32*
@@ -49,8 +49,8 @@ void loop() {
     static unsigned long ten_second_delay = millis() + 10000;
     static bool motion_detected = false;
     HAMQTT.loop();
-    if(!mqtt_client.connected() &&
-            !mqtt_client.connect("examples",MQTT_USER,MQTT_PASSWORD))
+    if(!HAMQTT.connected() &&
+            !HAMQTT.connect("examples",MQTT_USER,MQTT_PASSWORD))
         delay(1000);
 
     if(millis() > ten_second_delay) {

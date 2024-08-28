@@ -1,10 +1,10 @@
 # Changelog
 
-## Unreleased
+## [1.0.5] - 2024-08-28
 
  - Fixed bug in reconnection loop
  - Added support for LWT
- - Added availability 
+ - Added availability for entities and/or devices
  - Added device attributes: hw_version, manufacturer, model
  - Added Binary Sensor
  - Added configuration features: device_class and icon
