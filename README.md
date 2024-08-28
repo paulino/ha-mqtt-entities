@@ -25,7 +25,7 @@ It is only tested on some ESP32
 
 **Features**:
 
-- The library implements HA-MQTT discovery [more info] [[more
+- The library implements HA-MQTT discovery [[more
   info](https://www.home-assistant.io/integrations/mqtt/)].
 - For simple designs, HA entities can be created without a device.
 - For complex designs, HA entities can be grouped into a device (recommended
@@ -129,8 +129,8 @@ PubSubClient mqtt_client(wifi_client);
 #define ENTITIES_COUNT 2
 #define MAX_TEXT_LENGTH 50
 HADevice ha_device("example02","Example 2 HA-MQTT","1.0");
-HASwitch ha_switch = HASwitch("example02switch","Test on/off",ha_device);
-HAText ha_text = HAText("example02","Input text",ha_device,MAX_TEXT_LENGTH);
+HASwitch ha_switch = HASwitch("switch_id","Test on/off",ha_device);
+HAText ha_text = HAText("text_id","Input text",ha_device,MAX_TEXT_LENGTH);
 
 void setup() {
     mqtt_client.setServer(MQTT_SERVER, MQTT_PORT);
@@ -144,8 +144,10 @@ void setup() {
 
 **Other examples**:
 
-- Availability and icon: [availability.ino](examples/availability/availability.ino)
 - Class device: [sensorbinary.ino](examples/sensorbinary/sensorbinary.ino)
+- Availability and icon: [availability.ino](examples/availability/availability.ino)
+- Device availability and last will: [deviceavailability.ino](examples/deviceavailability/deviceavailability.ino)
+
 
 ## Alternatives
 
