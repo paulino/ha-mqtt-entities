@@ -35,7 +35,7 @@ WiFiClient wifi_client;
 PubSubClient mqtt_client(wifi_client);
 
 // HA Parts
-#define ENTITIES_COUNT 3
+#define ENTITIES_COUNT 2
 // This example optimizes the memory usage by using PSTR to store the strings
 // in flash memory
 #define SW_VERSION PSTR("1.0.0")

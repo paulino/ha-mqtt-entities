@@ -28,7 +28,7 @@ class HAMQTTController {
         HAMQTT_CALLBACK_SIGNATURE(callback);
         HAMQTTController();
 
-        unsigned long int delaySendState;
+        unsigned long int delaySend;
         HADevice *lastWillDevice;
 
     protected:
@@ -36,7 +36,7 @@ class HAMQTTController {
         HAEntity **entities;
         int entityCounter;
         static void pubSubClientHandler(char* topic, byte* payload, unsigned int length);
-        enum State {Connected, Connecting, Disconnected } state ;
+        enum State {Disconnected, Start, Connecting, Connected} state ;
 
     public:
         static HAMQTTController& getInstance();
