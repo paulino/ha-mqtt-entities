@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.6] - Unreleased
+
+ - Fixed bug in reconnection to HA when MQTT broker is restarted
+
 ## [1.0.5] - 2024-08-28
 
  - Fixed bug in reconnection loop
