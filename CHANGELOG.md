@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+
+ - Fixed Bug on MQTT reconnection. Device availability was not sent to HA
+
 ## [1.0.6] - 2024-09-22
 
  - Fixed bug in reconnection to HA when MQTT connection is lost

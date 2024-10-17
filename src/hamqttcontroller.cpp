@@ -64,13 +64,13 @@ boolean HAMQTTController::connect(const char *id, const char *user,
             return false;
     } else if (!this->mqttClient->connect(id,user,pass))
         return false;
+    this->mqttClient->subscribe(topicHass);
     this->state = Start;
     return this->mqttClient->connected();
 
 }
 
 void HAMQTTController::onConnect() {
-    this->mqttClient->subscribe(topicHass);
     HAEntity *entity;
     for (int i = 0; i < this->entityCounter; i++){
         entity = this->entities[i];
@@ -83,17 +83,18 @@ void HAMQTTController::sendAllStates() {
     HADevice *device;
     for (int i = 0; i < this->entityCounter; i++) {
         entity = this->entities[i];
-        entity->sendState(this->mqttClient);
         entity->sendAvailable(this->mqttClient,true);
-        device = entity->getDevice();
-        if (device != NULL)
+        if (device != NULL && device != entity->getDevice())
+        {
+            device = entity->getDevice();
             device->sendAvailable(this->mqttClient,true);
+        }
+        entity->sendState(this->mqttClient);
     }
 }
 
 bool HAMQTTController::mqttOnReceived(char *topic, byte *payload,
     unsigned int length) {
-
     char cmd_topic_buffer[HA_MAX_TOPIC_LENGTH];
     if (strcmp(topic,topicHass) == 0 && length > 3 && payload[1] == 'n') {
         // HA topic is received then HA has been restarted and data is required
@@ -127,10 +128,10 @@ void HAMQTTController::loop() {
     if (mqttClient == NULL)
         return;
 
-    if (mqttClient->connected())
-        state = mqttClient->loop()?state:Disconnected;
-    else
+    if (!mqttClient->connected())
         this->state = Disconnected;
+
+    this->mqttClient->loop();
 
     switch(this->state)
     {
@@ -163,7 +164,6 @@ void HAMQTTController::loop() {
                     entity->sendAvailable(mqttClient);
                     if (!mqttClient->connected())
                         break;
-
                 }
             break;
     }
