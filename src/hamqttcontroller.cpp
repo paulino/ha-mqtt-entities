@@ -47,8 +47,9 @@ void HAMQTTController::begin(PubSubClient& mqtt_client,int component_count) {
 void HAMQTTController::addEntity(HAEntity& entity) {
     this->entities[this->entityCounter] = &entity;
     this->entityCounter++;
-    if (this->lastWillDevice == NULL && entity.getDevice() != NULL)
-        this->lastWillDevice = entity.getDevice();
+    if (this->lastWillDevice == NULL && entity.getDevice() != NULL &&
+        entity.getDevice()->getAvailability())
+            this->lastWillDevice = entity.getDevice();
 }
 
 boolean HAMQTTController::connect(const char *id, const char *user,
@@ -84,13 +85,20 @@ void HAMQTTController::sendAllStates() {
     for (int i = 0; i < this->entityCounter; i++) {
         entity = this->entities[i];
         entity->sendAvailable(this->mqttClient,true);
-        if (device != NULL && device != entity->getDevice())
+        if (device == NULL && entity->getDevice() != NULL)
         {
+            device = entity->getDevice();
+            device->sendAvailable(this->mqttClient,true);
+        }
+        else if (device != NULL && device != entity->getDevice())
+        {
+            // This happens when there are more than one device
             device = entity->getDevice();
             device->sendAvailable(this->mqttClient,true);
         }
         entity->sendState(this->mqttClient);
     }
+
 }
 
 bool HAMQTTController::mqttOnReceived(char *topic, byte *payload,

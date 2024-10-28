@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.8] - Unreleased
+
+- Fixed bug for some features in entities
+- Fixed bug in availability for devices
+
 ## [1.0.7] - 2024-10-22
 
  - Fixed Bug on MQTT reconnection. Device availability was not sent to HA

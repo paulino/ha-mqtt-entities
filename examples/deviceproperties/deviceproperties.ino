@@ -38,7 +38,7 @@ void setup() {
     mqtt_client.setServer(MQTT_SERVER, MQTT_PORT);
 
     // Device configuration out of constructor
-    ha_device.setName("HA-MQTT: The name of device");
+    ha_device.setName("HA-MQTT: Device with info");
     ha_device.setIdentifier("device01"); // Must be unique to avoid conflicts with other devices
     ha_device.setManufacturer("US");
     ha_device.setModel("ESP32");

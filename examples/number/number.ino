@@ -30,7 +30,7 @@ PubSubClient mqtt_client(wifi_client);
 
 // HA Parts
 #define ENTITIES_COUNT 1
-HADevice ha_device = HADevice("example01","Example 1 HA-MQTTT","1.0");
+HADevice ha_device = HADevice("example01","Example slicer HA-MQTTT","1.0");
 HANumber ha_number = HANumber("example01number","Slicer",ha_device,1,100,1);
 
 void ha_callback(HAEntity *entity, char *topic, byte *payload, unsigned int length);
@@ -46,6 +46,7 @@ void setup() {
 
     // start wifi
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+    Serial.printf("HaMqttEntities version: %s\n",HA_MQTT_VERSION_S);
 }
 
 void loop() {

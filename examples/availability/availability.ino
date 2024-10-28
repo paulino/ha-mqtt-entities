@@ -19,7 +19,7 @@ NOTE: The availability feature at entity level it is not compatible with
 #include <HaMqttEntities.h>
 
 // This file is not included in the repository only used for local testing
-// #include "secrets.h"
+//#include "secrets.h"
 
 // You must set the next defines
 #ifndef SECRETS_H
@@ -70,6 +70,7 @@ void setup()
 
     // start wifi
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+    Serial.printf("HaMqttEntities version: %s\n",HA_MQTT_VERSION_S);
 }
 
 void loop()

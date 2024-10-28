@@ -132,7 +132,7 @@ void HAEntity::addFeature(int key, const char *value) {
     if (key == HA_FEATURE_AVAILABILITY)
         this->available = HA_AVTY_PENDING_ON;
     else
-        features->append(featureKeys[key],value);
+        this->addFeature(featureKeys[key],value);
 }
 
 void HAEntity::addFeature(const char *key, const char *value) {

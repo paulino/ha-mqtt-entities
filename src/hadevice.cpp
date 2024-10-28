@@ -28,6 +28,7 @@ HADevice::HADevice(const char *identifier,  const char *name,
     this->manufacturer = manufacturer;
     this->model = model;
     this->hw_version = hw_version;
+    this->available = HA_AVTY_DISABLED;
 }
 
 HADevice::HADevice(const char *sw_version) : HADevice() {
@@ -39,6 +40,7 @@ HADevice::HADevice() {
     this->manufacturer = NULL;
     this->model = NULL;
     this->hw_version = NULL;
+    this->available = HA_AVTY_DISABLED;
 }
 
 void HADevice::setIdentifier(const char *identifier) {

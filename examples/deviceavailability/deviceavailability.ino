@@ -1,4 +1,4 @@
-/* ha-mqtt-entities library example of availability and last will
+/* ha-mqtt-entities library example of availability and last will for a device.
 
 - Board: ESP32*
 
@@ -56,9 +56,13 @@ void setup()
     HAMQTT.addEntity(ha_switch);
     HAMQTT.addEntity(ha_sensor);
 
-    // Features
+    // Features. The device availability enable last will at device level
     ha_device.addFeature(HA_FEATURE_AVAILABILITY);
-    ha_device.setAvailable(true);
+
+    // By default the device is available is true but, it can be used in other
+    // parts of the code to disable/enable the device if need
+
+    // ha_device.setAvailable(true);
 
     // Initial states
     ha_switch.setState(true);
@@ -67,6 +71,7 @@ void setup()
 
     // start wifi
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+    Serial.printf("HaMqttEntities version: %s\n",HA_MQTT_VERSION_S);
 }
 
 void loop()
