@@ -22,13 +22,15 @@ const char *HADevice::availabilityTopicTemplate PROGMEM = \
 HADevice::HADevice(const char *identifier,  const char *name,
     const char *sw_version, const char *manufacturer, const char *model,
     const char *hw_version ) {
-    this->setIdentifier(identifier);
-    this->setName(name);
+    this->identifier = NULL;
+    this->name = NULL;
     this->sw_version = sw_version;
     this->manufacturer = manufacturer;
     this->model = model;
     this->hw_version = hw_version;
     this->available = HA_AVTY_DISABLED;
+    this->setIdentifier(identifier);
+    this->setName(name);
 }
 
 HADevice::HADevice(const char *sw_version) : HADevice() {
@@ -44,19 +46,15 @@ HADevice::HADevice() {
 }
 
 void HADevice::setIdentifier(const char *identifier) {
-    if (this->identifier != NULL) {
+    if (this->identifier != NULL)
         delete this->identifier;
-    }
-    this->identifier = new char[strlen(identifier) + 1];
-    sprintf(this->identifier, "%s", identifier);
+    this->identifier = strdup(identifier);
 }
 
 void HADevice::setName(const char *name) {
-    if (this->name != NULL) {
+    if (this->name != NULL)
         delete this->name;
-    }
-    this->name = new char[strlen(name) + 1];
-    sprintf(this->name, "%s", name);
+    this->name = strdup(name);
 }
 
 char * HADevice::getConfigPayload(char *buffer) {

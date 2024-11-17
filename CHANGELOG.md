@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.9] - Unreleased
+
+- Fixed bug in HADevice constructor
+- Added some features as `progmem` strings to save memory: mode
+
 ## [1.0.8] - 2024-10-31
 
 - Fixed bug with some features in entities
