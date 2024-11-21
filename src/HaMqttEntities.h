@@ -1,8 +1,8 @@
 #ifndef __HAMQTT_H__
 #define __HAMQTT_H__
 
-#define HA_MQTT_VERSION_N 8
-#define HA_MQTT_VERSION_S "1.0.8"
+#define HA_MQTT_VERSION_N 9
+#define HA_MQTT_VERSION_S "1.0.9"
 
 #include<haconsts.h>
 #include<hadevice.h>
@@ -17,8 +17,8 @@
 #include<haselect.h>
 #include<hasensorbinary.h>
 
-// Singleton instance
-HAMQTTController& HAMQTT = HAMQTTController::getInstance();
+// Singleton instance via extern for Arduino library
+extern HAMQTTController& HAMQTT;
 
 #endif
 

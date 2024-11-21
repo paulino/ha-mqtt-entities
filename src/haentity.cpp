@@ -28,7 +28,8 @@ const char *HAEntity::availabilityTopicTemplate PROGMEM =
 const char *HAEntity::featureKeys[] PROGMEM = {
     "dev_cla",
     "ic",
-    "ent_cat"
+    "ent_cat",
+    "mode"
     };
 
 

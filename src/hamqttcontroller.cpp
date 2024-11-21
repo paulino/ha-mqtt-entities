@@ -9,10 +9,12 @@
 // enable the entities before sending states
 #define HA_DELAY_SEND_STATES 3000
 
-
 const char *HAMQTTController::topicHass PROGMEM = "homeassistant/status";
 
-HAMQTTController *HAMQTTController::instance = NULL;
+HAMQTTController *HAMQTTController::instance = new HAMQTTController();
+
+// Global var, Arduino helper
+HAMQTTController& HAMQTT = HAMQTTController::getInstance();
 
 void HAMQTTController::pubSubClientHandler(char* topic, byte* payload,
     unsigned int length)
@@ -21,8 +23,8 @@ void HAMQTTController::pubSubClientHandler(char* topic, byte* payload,
 }
 
 HAMQTTController& HAMQTTController::getInstance() {
-    if (instance == NULL)
-        instance = new HAMQTTController();
+    //if (instance == NULL)
+    //    instance = new HAMQTTController();
     return *instance;
 }
 
