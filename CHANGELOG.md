@@ -1,9 +1,15 @@
 # Changelog
 
-## [1.0.9] - Unreleased
+## [1.0.10] - 2025-02-21
+
+- Fixed bug for entities not grouped in devices
+- Improved *lastwill* device configuration
+- Removed extra delay in some examples
+
+## [1.0.9] - 2024-12-10
 
 - Fixed bug in HADevice constructor
-- Added some features as `progmem` strings to save memory: mode
+- Added some features as `progmem` strings to save memory
 
 ## [1.0.8] - 2024-10-31
 

@@ -23,8 +23,6 @@ void HAMQTTController::pubSubClientHandler(char* topic, byte* payload,
 }
 
 HAMQTTController& HAMQTTController::getInstance() {
-    //if (instance == NULL)
-    //    instance = new HAMQTTController();
     return *instance;
 }
 
@@ -49,9 +47,10 @@ void HAMQTTController::begin(PubSubClient& mqtt_client,int component_count) {
 void HAMQTTController::addEntity(HAEntity& entity) {
     this->entities[this->entityCounter] = &entity;
     this->entityCounter++;
-    if (this->lastWillDevice == NULL && entity.getDevice() != NULL &&
-        entity.getDevice()->getAvailability())
-            this->lastWillDevice = entity.getDevice();
+}
+
+void HAMQTTController::setLastWillDevice(HADevice& device) {
+    this->lastWillDevice = &device;
 }
 
 boolean HAMQTTController::connect(const char *id, const char *user,
@@ -83,7 +82,7 @@ void HAMQTTController::onConnect() {
 
 void HAMQTTController::sendAllStates() {
     HAEntity *entity;
-    HADevice *device;
+    HADevice *device = NULL;
     for (int i = 0; i < this->entityCounter; i++) {
         entity = this->entities[i];
         entity->sendAvailable(this->mqttClient,true);

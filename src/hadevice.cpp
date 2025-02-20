@@ -92,7 +92,10 @@ void HADevice::setAvailable(bool available) {
 
 void HADevice::addFeature(int key, const char *value) {
     if (key == HA_FEATURE_AVAILABILITY)
+    {
         this->available = HA_AVTY_PENDING_ON;
+        HAMQTTController::getInstance().setLastWillDevice(*this);
+    }
 
 }
 
@@ -103,7 +106,7 @@ char *HADevice::getAvailabilityTopic(char *buffer)
 }
 
 void HADevice::sendAvailable(PubSubClient *mqttClient,bool force) {
-    // TODO: Create a new class called HAAvalability
+    // TODO: Create a new class called HAAvailability
     if(this->available == HA_AVTY_DISABLED)
         return;
     if (force && this->available == HA_AVTY_ON)

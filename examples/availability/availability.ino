@@ -86,7 +86,6 @@ void loop()
         }
     }
     HAMQTT.loop();
-    delay(50);
 }
 
 /* Callback from HA-MQTT entities. It is called when an entity changes its state.

@@ -45,6 +45,7 @@ class HAMQTTController {
 
         void begin(PubSubClient& mqtt_client,int component_count);
         void addEntity(HAEntity& entity);
+        void setLastWillDevice(HADevice& device);
 
         /** Connect to the MQTT broker using the PubSubClient instance.
          *

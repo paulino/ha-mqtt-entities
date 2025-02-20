@@ -1,8 +1,8 @@
 #ifndef __HAMQTT_H__
 #define __HAMQTT_H__
 
-#define HA_MQTT_VERSION_N 9
-#define HA_MQTT_VERSION_S "1.0.9"
+#define HA_MQTT_VERSION_N 10
+#define HA_MQTT_VERSION_S "1.0.10"
 
 #include<haconsts.h>
 #include<hadevice.h>

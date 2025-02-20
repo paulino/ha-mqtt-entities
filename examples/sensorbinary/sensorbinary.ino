@@ -59,7 +59,6 @@ void loop() {
         ha_sensor.setState(motion_detected);
         motion_detected = !motion_detected;
     }
-    delay(10);
 
 }
 
