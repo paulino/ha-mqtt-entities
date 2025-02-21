@@ -90,7 +90,8 @@ MQTT Device registry attributes supported:
 A complete set of examples is in the folder `examples` but, two simple examples
 are shown below.
 
-**Example 1**: A simple entity created without a device:
+**Example 1**: A simple entity created without a device: (full example at
+[led.ino](examples/led/led.ino))
 
 ```cpp
 WiFiClient wifi_client;
