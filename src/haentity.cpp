@@ -11,26 +11,29 @@
 */
 
 // Configuration topic
-const char *HAEntity::configTopicTemplate PROGMEM = "homeassistant/%s/%s/config";
+const char *const HAEntity::configTopicTemplate PROGMEM =
+    "homeassistant/%s/%s/config";
 
 // Configuration payload parts
-const char *HAEntity::configPayloadTemplate PROGMEM = "{\
+const char *const HAEntity::configPayloadTemplate PROGMEM = "{\
 \"~\":\"homeassistant/%s/%s\",\
 \"name\":\"%s\",\
 \"uniq_id\":\"%s\"";
 
-const char *HAEntity::commandTopicTemplate PROGMEM = "homeassistant/%s/%s/set";
-const char *HAEntity::stateTopicTemplate PROGMEM = "homeassistant/%s/%s/state";
-const char *HAEntity::availabilityTopicTemplate PROGMEM =
+const char *const HAEntity::commandTopicTemplate PROGMEM =
+    "homeassistant/%s/%s/set";
+const char *const HAEntity::stateTopicTemplate PROGMEM =
+    "homeassistant/%s/%s/state";
+const char *const HAEntity::availabilityTopicTemplate PROGMEM =
     "homeassistant/%s/%s/available";
 
 
-const char *HAEntity::featureKeys[] PROGMEM = {
+const char *const HAEntity::featureKeys[] PROGMEM = {
     "dev_cla",
     "ic",
     "ent_cat",
     "mode"
-    };
+};
 
 
 HAEntity::HAEntity(const char *id,const char *name,const char *component,

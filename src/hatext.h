@@ -9,7 +9,7 @@ class HADevice;
 class HAText : public HAEntity {
     protected:
 
-        static const char *component;
+        static const char *const component;
 
         bool dirty;
         char *state;

@@ -6,7 +6,7 @@
 
 #include "hadevice.h"
 
-const char *HASwitch::component PROGMEM  = "switch";
+const char *const HASwitch::component PROGMEM = "switch";
 
 HASwitch::HASwitch(const char *unique_id, const char *name, HADevice& device):
     HASwitch(unique_id,name) {

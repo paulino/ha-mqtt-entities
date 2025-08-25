@@ -1,7 +1,7 @@
 #ifndef __HAKVPAIRLIST_H__
 #define __HAKVPAIRLIST_H__
 
-#include <cstddef>
+#include <stddef.h>
 
 class HAKVPairList {
     protected:

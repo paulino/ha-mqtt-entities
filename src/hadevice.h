@@ -1,8 +1,8 @@
 #ifndef __HA_DEVICE_H__
 #define __HA_DEVICE_H__
 
-#include <cstddef>
-#include <cstdint>
+#include <stddef.h>
+#include <stdint.h>
 
 #include "haconsts.h"
 
@@ -10,8 +10,8 @@ class PubSubClient;
 
 class HADevice {
     protected:
-        static const char *configDeviceTemplate;
-        static const char *availabilityTopicTemplate;
+        static const char *const configDeviceTemplate;
+        static const char *const availabilityTopicTemplate;
 
         char *identifier;
         char *name;

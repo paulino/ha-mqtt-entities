@@ -6,8 +6,7 @@
 #include <stdio.h>
 #include <Arduino.h>
 
-
-const char *HADevice::configDeviceTemplate PROGMEM = "\
+const char *const HADevice::configDeviceTemplate PROGMEM = "\
 \"dev\":{\
 \"ids\":\"%s\",\
 \"name\":\"%s\",\
@@ -15,7 +14,7 @@ const char *HADevice::configDeviceTemplate PROGMEM = "\
 
 
 // Available topic shared by all entities
-const char *HADevice::availabilityTopicTemplate PROGMEM = \
+const char *const HADevice::availabilityTopicTemplate PROGMEM = \
     HA_TOPIC_HEAD"/%s/available";
 
 

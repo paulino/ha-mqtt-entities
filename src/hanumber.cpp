@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <PubSubClient.h>
 
-const char *HANumber::component PROGMEM  = "number";
+const char *const HANumber::component PROGMEM = "number";
 
 HANumber::HANumber(const char *unique_id, const char *name,
     HADevice& device,int min,int max,const int step):

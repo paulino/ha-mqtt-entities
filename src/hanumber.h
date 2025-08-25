@@ -8,7 +8,7 @@ class HADevice;
 
 class HANumber : public HAEntity {
     protected:
-        static const char *component;
+        static const char *const component;
 
         bool dirty;
         int state;

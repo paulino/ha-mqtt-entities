@@ -34,7 +34,7 @@ PubSubClient mqtt_client(wifi_client);
 #define HA_DEVICE_FRIENDLY_NAME "Example Select HA-MQTT"
 
 #define OPTIONS_COUNT 3
-const char *select_options[OPTIONS_COUNT] PROGMEM = {
+const char *const select_options[OPTIONS_COUNT] PROGMEM = {
      "Option 1",
      "Option 2",
      "Option 3"
