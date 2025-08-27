@@ -24,13 +24,13 @@ class HAEntity
  {
     protected:
 
-        static const char *configTopicTemplate;
-        static const char *configPayloadTemplate;
-        static const char *availabilityTopicTemplate;
-        static const char *featureKeys[];
+        static const char *const configTopicTemplate;
+        static const char *const configPayloadTemplate;
+        static const char *const availabilityTopicTemplate;
+        static const char *const featureKeys[];
 
-        static const char *commandTopicTemplate;
-        static const char *stateTopicTemplate;
+        static const char *const commandTopicTemplate;
+        static const char *const stateTopicTemplate;
 
         HADevice *device;
         const char *id;

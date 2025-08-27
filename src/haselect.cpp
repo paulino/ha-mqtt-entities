@@ -2,9 +2,9 @@
 #include <PubSubClient.h>
 #include <haselect.h>
 
-const char *HASelect::component PROGMEM  = "select";
+const char *const HASelect::component PROGMEM = "select";
 
-HASelect::HASelect(const char *unique_id, const char *name, u_int8_t max_options):
+HASelect::HASelect(const char *unique_id, const char *name, uint8_t max_options):
     HAEntity(unique_id,name,component)
 {
     this->maxOptions = max_options;
@@ -13,7 +13,7 @@ HASelect::HASelect(const char *unique_id, const char *name, u_int8_t max_options
     this->options = new char*[max_options];
 }
 
-HASelect::HASelect(const char *unique_id,const char *name, u_int8_t max_options,
+HASelect::HASelect(const char *unique_id, const char *name, uint8_t max_options,
     const char *options[]) : HAEntity(unique_id,name,component) {
     this->maxOptions = max_options;
     this->state = NULL;
@@ -22,12 +22,12 @@ HASelect::HASelect(const char *unique_id,const char *name, u_int8_t max_options,
 }
 
 HASelect::HASelect(const char *unique_id, const char *name, HADevice& device,
-    u_int8_t max_options):HASelect(unique_id,name,max_options) {
+    uint8_t max_options):HASelect(unique_id,name,max_options) {
         this->device = &device;
 }
 
 HASelect::HASelect(const char *unique_id, const char *name,
-    HADevice& device, u_int8_t max_options, const char* options[]):
+    HADevice& device, uint8_t max_options, const char* options[]):
     HASelect(unique_id,name,max_options,options) {
         this->device = &device;
 }

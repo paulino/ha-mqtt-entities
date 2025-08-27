@@ -6,7 +6,7 @@
 
 #include <hatext.h>
 
-const char *HAText::component PROGMEM  = "text";
+const char *const HAText::component PROGMEM = "text";
 
 HAText::HAText(const char *unique_id, const char *name, HADevice& device,
     unsigned int max_size):HAText(unique_id,name,max_size) {

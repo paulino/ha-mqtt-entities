@@ -8,7 +8,7 @@ class HADevice;
 
 class HASensorBinary : public HASensor {
     protected:
-        static const char *component;
+        static const char *const component;
         bool state;
 
     public:

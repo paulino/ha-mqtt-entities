@@ -24,7 +24,7 @@ class HAMQTTController {
 
     private:
         static HAMQTTController *instance;
-        static const char *topicHass;
+        static const char *const topicHass;
         HAMQTT_CALLBACK_SIGNATURE(callback);
         HAMQTTController();
 

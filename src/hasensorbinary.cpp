@@ -3,7 +3,7 @@
 
 #include <hasensorbinary.h>
 
-const char *HASensorBinary::component PROGMEM  = "binary_sensor";
+const char *const HASensorBinary::component PROGMEM = "binary_sensor";
 
 HASensorBinary::HASensorBinary(const char *unique_id, const char *name,
     HADevice& device) : HASensor(unique_id,name,component)

@@ -3,7 +3,7 @@
 
 #include<habutton.h>
 
-const char *HAButton::component PROGMEM  = "button";
+const char *const HAButton::component PROGMEM = "button";
 
 HAButton::HAButton(const char *unique_id, const char *name, HADevice& device):
     HAEntity(unique_id,name,component,&device) {

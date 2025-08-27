@@ -1,5 +1,5 @@
-#include"hamqttcontroller.h"
-#include"hadevice.h"
+#include "hamqttcontroller.h"
+#include "hadevice.h"
 
 // When the broker is restarted, the data sent will be lost if HA is not
 // connected first. This is the time to wait for HA to connect.
@@ -9,7 +9,7 @@
 // enable the entities before sending states
 #define HA_DELAY_SEND_STATES 3000
 
-const char *HAMQTTController::topicHass PROGMEM = "homeassistant/status";
+const char *const HAMQTTController::topicHass PROGMEM = "homeassistant/status";
 
 HAMQTTController *HAMQTTController::instance = new HAMQTTController();
 

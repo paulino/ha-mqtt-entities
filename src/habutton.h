@@ -18,7 +18,7 @@ class HADevice;
 
 class HAButton : public HAEntity {
     protected:
-        static const char *component;        
+        static const char *const component;
 
     public:
         HAButton(const char *unique_id,const char *name,HADevice& device);
