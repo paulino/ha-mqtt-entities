@@ -1,5 +1,5 @@
 /* ha-mqtt-entities library example of a sensor that shows
-    history graph in Home Assistant.
+    history graph in Home Assistant with the unit of measurement set
 
 - Board: ESP32*
 
@@ -47,6 +47,10 @@ void setup() {
 
     HAMQTT.begin(mqtt_client,ENTITIES_COUNT);
     HAMQTT.addEntity(ha_sensor);
+
+    // Setting unit of measurement (not mandatory). Using abbreviation
+    // due to MQTT limitations
+    ha_sensor.addFeature("unit_of_meas","V");
 
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 }

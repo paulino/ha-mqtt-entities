@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.11] - 2025-08-25
+
+- Fix compiler errors for avr-gcc #9
+- Improved sensor-numeric example by adding `unit_of_measurement` attribute
+
 ## [1.0.10] - 2025-02-21
 
 - Fixed bug for entities not grouped in devices
