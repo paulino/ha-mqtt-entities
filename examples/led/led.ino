@@ -18,7 +18,7 @@ You must set the definitions in the code under SECRETS_H.
 #include<HaMqttEntities.h>
 
 // This file is not included in the repository only used for local testing
-// #include "secrets.h"
+//#include "secrets.h"
 
 // You must set the next defines
 #ifndef SECRETS_H
@@ -33,7 +33,7 @@ You must set the definitions in the code under SECRETS_H.
 WiFiClient wifi_client;
 PubSubClient mqtt_client(wifi_client);
 
-#define PIN_LED 2  // On board LED in ESP32 DevKit v1
+#define PIN_LED LED_BUILTIN  // On board LED in ESP32 DevKit v1
 #define ENTITIES_COUNT 1
 #define SWITCH_UID "example01switch"  // Be careful of be unique in HA entities list
 

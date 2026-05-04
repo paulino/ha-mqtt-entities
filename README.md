@@ -21,7 +21,10 @@ It is only tested on some ESP32
 
 **Dependence**:
 
-  - PubSubClient library.
+The library work fine with the latest version of PubSubClient but it is recommended
+to use PubSubClient3 that is a fork of PubSubClient with some improvements.
+
+  - PubSubClient3 or PubSubClient library.
 
 **Features**:
 

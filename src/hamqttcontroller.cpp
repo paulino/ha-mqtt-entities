@@ -77,6 +77,8 @@ void HAMQTTController::onConnect() {
     for (int i = 0; i < this->entityCounter; i++){
         entity = this->entities[i];
         entity->onConnect(this->mqttClient);
+        if (!this->mqttClient->loop())
+            return;
     }
 }
 
@@ -97,7 +99,11 @@ void HAMQTTController::sendAllStates() {
             device = entity->getDevice();
             device->sendAvailable(this->mqttClient,true);
         }
+        if (!this->mqttClient->loop())
+            return;        
         entity->sendState(this->mqttClient);
+        if (!this->mqttClient->loop())
+            return;
     }
 
 }
@@ -137,10 +143,8 @@ void HAMQTTController::loop() {
     if (mqttClient == NULL)
         return;
 
-    if (!mqttClient->connected())
+    if (!this->mqttClient->loop())
         this->state = Disconnected;
-
-    this->mqttClient->loop();
 
     switch(this->state)
     {
@@ -171,7 +175,7 @@ void HAMQTTController::loop() {
                     if (entity->isDirty())
                         entity->sendState(mqttClient);
                     entity->sendAvailable(mqttClient);
-                    if (!mqttClient->connected())
+                    if (!this->mqttClient->loop())
                         break;
                 }
             break;

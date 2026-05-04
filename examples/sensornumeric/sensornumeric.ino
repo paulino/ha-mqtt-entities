@@ -48,9 +48,14 @@ void setup() {
     HAMQTT.begin(mqtt_client,ENTITIES_COUNT);
     HAMQTT.addEntity(ha_sensor);
 
-    // Setting unit of measurement (not mandatory). Using abbreviation
+    // Optional
+    // Setting unit of measurement using abbreviation
     // due to MQTT limitations
     ha_sensor.addFeature("unit_of_meas","V");
+
+    // Optional
+    // Data isn't usefully recorded in HA without state_class attribute. 
+    ha_sensor.addFeature("stat_cla","measurement");
 
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 }

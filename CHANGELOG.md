@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.12] - 2026-05-04
+
+- Changed dependency to PubSubClient3
+- Improved MQTT broker reconnection
+
 ## [1.0.11] - 2025-08-25
 
 - Fix compiler errors for avr-gcc #9
